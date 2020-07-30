@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 //prueba de comentario
+    //prueba de comentario 2
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
