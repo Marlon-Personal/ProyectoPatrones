@@ -1,0 +1,4 @@
+package backEnd.patrones.comportamiento.observador.interfaces;
+
+public interface Sujeto {
+}
