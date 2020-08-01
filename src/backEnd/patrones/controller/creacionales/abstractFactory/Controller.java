@@ -6,6 +6,7 @@ import backEnd.patrones.creacional.abstractFactory.abstract_Factory.Dice_Obj;
 import backEnd.patrones.creacional.abstractFactory.abstract_Product.Dice;
 import backEnd.patrones.creacional.abstractFactory.abstract_Product.Unit;
 import backEnd.patrones.creacional.abstractFactory.concrete_Factory.*;
+import backEnd.patrones.creacional.abstractFactory.concrete_Factory.AttackDices.*;
 import backEnd.patrones.creacional.abstractFactory.concrete_Factory.Unit.*;
 
 import java.util.*;
@@ -16,7 +17,7 @@ public class Controller {
 
     public static String throwDice() {
         throwInvocationDices();
-        //MISING THE OTHER DICE, THE ONE WITH THE ATTACKS AND MOVEMENTS
+        throwAttackDices();
 
         return "\n" + "Dados lanzados de manera exitosa" + "\n";
     }
@@ -52,10 +53,44 @@ public class Controller {
 
     /**Esta función habilita que las instancias obtenidas sean guardadas en el array**/
     private static void addToArray(Dice pObjDice) {
-        if (diceArray.size() < 6) {
-            diceArray.add(pObjDice);
+        int att, spAtt, mov, inf, art, tank;
+        att = countDicesPerUnit("DadoAtaque");
+        spAtt = countDicesPerUnit("DadoAtaqueEspecial");
+        mov = countDicesPerUnit("DadoMovimiento");
+        inf = countDicesPerUnit("DadoInfanteria");
+        art = countDicesPerUnit("DadoArtilleria");
+        tank = countDicesPerUnit("DadoTanque");
+
+        if (pObjDice.getType().equals("DadoArtilleria")||pObjDice.getType().equals("DadoInfanteria")||pObjDice.getType().equals("DadoTanque")){
+            if(inf+art+tank<6){
+                diceArray.add(pObjDice);
+            } else {
+                System.out.println("No se pueden agregar más dados de invocación, se ha alcanzado el tope máximo de 6");
+            }
         } else {
-            System.out.println("No se pueden agregar más dados de invocación, se ha alcanzado el tope máximo de 6");
+            switch (pObjDice.getType()){
+                case "DadoAtaque":
+                    if(att < 3){
+                        diceArray.add(pObjDice);
+                    } else {
+                        System.out.println("No se pueden agregar más dados de ataque, se ha alcanzado el tope máximo de 3");
+                    }
+                    break;
+                case "DadoAtaqueEspecial":
+                    if(spAtt < 2){
+                        diceArray.add(pObjDice);
+                    } else {
+                        System.out.println("No se pueden agregar más dados de ataque especial, se ha alcanzado el tope máximo de 3");
+                    }
+                    break;
+                case "DadoMovimiento":
+                    if(mov < 3){
+                        diceArray.add(pObjDice);
+                    } else {
+                        System.out.println("No se pueden agregar más dados de movimiento, se ha alcanzado el tope máximo de 3");
+                    }
+                    break;
+            }
         }
     }
 
@@ -206,13 +241,33 @@ public class Controller {
                         i--;
                     }
                 }
+            case "DadoAtaque":
+                for (int i = 0; i < diceArray.size(); i++) {
+                    if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <1) {
+                        diceArray.remove(i);
+                        dicesRemoved++;
+                        i--;
+                    }
+                }
+            case "DadoAtaqueEspecial":
+                for (int i = 0; i < diceArray.size(); i++) {
+                    if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <1) {
+                        diceArray.remove(i);
+                        dicesRemoved++;
+                        i--;
+                    }
+                }
+            case "DadoMovimiento":
+                for (int i = 0; i < diceArray.size(); i++) {
+                    if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <1) {
+                        diceArray.remove(i);
+                        dicesRemoved++;
+                        i--;
+                    }
+                }
             default:
                 break;
         }
-
-
-
-
     }
 
     private static HashMap<Integer, Unit> armyArray = new HashMap<Integer, Unit>();
@@ -228,5 +283,118 @@ public class Controller {
         }
 
         return msData;
+    }
+
+
+
+
+    //Nuevas funcionalidades
+
+    /**Funcionalidad que permite lanzar los dados de ataque, ataque especial y movimiento
+     * El CreateDiceFactory para estos dados y para los dados de invocación es el mismo**/
+    public static void throwAttackDices() {
+        Dice_Obj moUnit;
+
+
+        int diceResult = Helper.throwDice();
+        if (diceResult == 1 || diceResult == 2) {
+            moUnit = new Factory_DiceAttack();
+            System.out.println("El resultado del dado de ataques y movimiento fue: " + diceResult + "\n" + "De tipo: " + CreateDiceFactory(moUnit));
+        } else if (diceResult == 4 || diceResult == 5) {
+            moUnit = new Factory_DiceSpAttack();
+            System.out.println("El resultado del dado de ataques y movimiento fue: " + diceResult + "\n" + "De tipo: " + CreateDiceFactory(moUnit));
+        } else {
+            moUnit = new Factory_DiceMovement();
+            System.out.println("El resultado del dado de ataques y movimiento fue: " + diceResult + "\n" + "De tipo: " + CreateDiceFactory(moUnit));
+
+        }
+    }
+
+
+    /**Esta función es igual a countInvocationDices(). En caso de ser necesario se pueden unir. La razón por la cual están separadas,
+     * es para poder trabajarlas mejor en cosola a la hora de debuggear
+     * **/
+    public static String countAttackDices() {
+        int spAtt = 0, att = 0, mov = 0;
+
+        for (int i = 0; i < diceArray.size(); i++) {
+            if (diceArray.get(i).getType().equals("DadoAtaque")) {
+                att++;
+            } else if (diceArray.get(i).getType().equals("DadoAtaqueEspecial")) {
+                spAtt++;
+            } else if (diceArray.get(i).getType().equals("DadoMovimiento")) {
+                mov++;
+            }
+        }
+        return "Dados de acción disponibles:" + "\n" +
+                "Ataque: " + att + "\n" +
+                "Ataque Especial: " + spAtt + "\n" +
+                "Movimiento: " + mov + "\n";
+    }
+
+
+    /**Esta función valida que hayan los dados suficientes para poder realizar la acción de ataque, ataque especial o movimiento**/
+    public static void performActionMain(int unitType) {
+
+        switch (unitType) {
+            case 1:
+                if (countDicesPerUnit("DadoAtaque") >= 1) {
+                    useAttack(unitType);
+                } else {
+                    System.out.println("No se puede realizar el ataque, insuficientes dados");
+                }
+                break;
+
+            case 2:
+                if (countDicesPerUnit("DadoAtaqueEspecial") >= 1) {
+                    useAttack(unitType);
+                } else {
+                    System.out.println("No se puede realizar el ataque especial, insuficientes dados");
+                }
+                break;
+
+            case 3:
+                if (countDicesPerUnit("DadoMovimiento") >= 1) {
+                    useAttack(unitType);
+                } else {
+                    System.out.println("No se puede realizar el movimiento, insuficientes dados");
+                }
+                break;
+
+            default:
+                break;
+
+        }
+
+    }
+
+    /**Esta función define que tipo de acción se va a emplear, las acciones pueden ser ataque, ataque especial o moviemiento
+     * Migue llama las funciones de el en esta parte**/
+    public static void useAttack(int unitType) {
+        Army_Unit moUnit;
+
+        switch (unitType) {
+            case 1:
+                //Funcionalidad de ataque va aqui
+                System.out.println("Se ha efectuado el ataque");
+                removeDicesUnit("DadoAtaque");
+                break;
+
+            case 2:
+                //Funcionalidad de ataque especial va aqui
+                System.out.println("Se ha efectuado el ataque especial");
+                removeDicesUnit("DadoAtaqueEspecial");
+                break;
+
+            case 3:
+                //Funcionalidad de movimiento va aqui
+                System.out.println("Se ha movido la tropa");
+                removeDicesUnit("DadoMovimiento");
+                break;
+
+            default:
+                break;
+        }
+
     }
 }
