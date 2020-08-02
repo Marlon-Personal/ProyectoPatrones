@@ -12,7 +12,8 @@ import java.util.*;
 
 public class ControllerAbstractFactory {
 
-    public ControllerPrototype cp = new ControllerPrototype();
+
+    public static ControllerPrototype cp = new ControllerPrototype();
     public ArrayList<Dice> diceArray = new ArrayList<Dice>();
 
     public String throwDice() {
@@ -128,9 +129,8 @@ public class ControllerAbstractFactory {
             case 1:
                 if (countDicesPerUnit("DadoInfanteria") >= 2) {
                     unit = cp.createInfantryCharacter(character);
-                    addToArmyArray(unit);
+                    cp.addToArmyArray(unit);
                     removeDicesUnit("DadoInfanteria");
-                    System.out.println(unit.getUnitInformation());
                 } else {
                     System.out.println("No se puede invocar la infantería, insuficientes dados");
                 }
@@ -139,9 +139,8 @@ public class ControllerAbstractFactory {
             case 2:
                 if (countDicesPerUnit("DadoArtilleria") >= 3) {
                     unit = cp.createArtilleryCharacter(character);
-                    addToArmyArray(unit);
+                    cp.addToArmyArray(unit);
                     removeDicesUnit("DadoArtilleria");
-                    System.out.println(unit.getUnitInformation());
                 } else {
                     System.out.println("No se puede invocar la artillería, insuficientes dados");
                 }
@@ -150,9 +149,8 @@ public class ControllerAbstractFactory {
             case 3:
                 if (countDicesPerUnit("DadoTanque") >= 4) {
                     unit = cp.createTankCharacter(character);
-                    addToArmyArray(unit);
+                    cp.addToArmyArray(unit);
                     removeDicesUnit("DadoTanque");
-                    System.out.println(unit.getUnitInformation());
                 } else {
                     System.out.println("No se puede invocar el tanque, insuficientes dados");
                 }
@@ -178,46 +176,6 @@ public class ControllerAbstractFactory {
         }
         return total;
     }
-
-
-    /**Esta función se encarga de crear la tropa dependiendo del tipo de objeto seleccionado. Luego llama a la funcion
-     * que guarda la tropa en el arreglo y elimina las instancias de dados utilizadas para poder llamar la tropa
-     *
-    public void summonUnit(int unitType) {
-        Army_Unit moUnit;
-
-        switch (unitType) {
-            case 1:
-                moUnit = new Factory_Infantry();
-                System.out.println(CreateUnitFactory(moUnit));
-                removeDicesUnit("DadoInfanteria");
-                break;
-
-            case 2:
-                moUnit = new Factory_Artillery();
-                System.out.println(CreateUnitFactory(moUnit));
-                removeDicesUnit("DadoArtilleria");
-                break;
-
-            case 3:
-                moUnit = new Factory_Tank();
-                System.out.println(CreateUnitFactory(moUnit));
-                removeDicesUnit("DadoTanque");
-                break;
-
-            default:
-                break;
-        }
-
-
-    }**/
-
-    /**Función que crea la tropa y la guarda en el arreglo
-    public String CreateUnitFactory(Army_Unit pFactory) {
-        Unit objUnit = pFactory.createUnit();
-        addToArmyArray(objUnit);
-        return objUnit.getUnitInformation();
-    }**/
 
     /**Funcion que remueve las instancias utilizadas de el arreglo de invocaciones**/
     public void removeDicesUnit(String diceType) {
@@ -276,21 +234,6 @@ public class ControllerAbstractFactory {
             default:
                 break;
         }
-    }
-
-    private HashMap<Integer, Unit> armyArray = new HashMap<Integer, Unit>();
-
-    private void addToArmyArray(Unit pObjUnit) {
-        armyArray.put(pObjUnit.getCode(), pObjUnit);
-    }
-
-    public String getInfoArmy() {
-        String msData="";
-        for(Map.Entry<Integer, Unit> entry : armyArray.entrySet()){
-            msData = msData + entry.getValue().getUnitInformation() + "\n";
-        }
-
-        return msData;
     }
 
 
