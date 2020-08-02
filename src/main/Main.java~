@@ -1,7 +1,6 @@
 package main;
 
 import backEnd.patrones.controller.creacionales.abstractFactory.ControllerAbstractFactory;
-import backEnd.patrones.controller.creacionales.prototype.ControllerPrototype;
 
 import java.util.Scanner;
 
@@ -9,7 +8,6 @@ public class Main {
 
     private static Scanner scan = new Scanner(System.in);
     public static ControllerAbstractFactory c = new ControllerAbstractFactory();
-    public static ControllerPrototype cp = new ControllerPrototype();
 
     public static void main(String[] args) {
         int option = 0;
@@ -61,20 +59,8 @@ public class Main {
         printer("2. Artillería");
         printer("3. Tanque");
         int option = scan.nextInt();
-        String characther;
 
-        printer("Seleccione una tropa de la lista");
-        if(option ==1){
-            printer(cp.returnInfantry());
-        } else
-        if(option == 2){
-            printer(cp.returnArtillery());
-        } else
-        if(option == 3){
-            printer(cp.returnTank());
-        }
-        characther = scan.next();
-        c.summonUnitMain(option, characther);
+        c.summonUnitMain(option);
     }
 
     public static void actionsMenu() {
