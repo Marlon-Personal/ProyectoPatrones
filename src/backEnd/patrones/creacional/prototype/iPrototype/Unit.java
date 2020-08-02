@@ -6,4 +6,5 @@ public interface Unit {
     public String getUnitInformation();
 
     public int getCode();
+    public String getName();
 }

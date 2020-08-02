@@ -2,6 +2,7 @@ package main;
 
 import backEnd.patrones.controller.creacionales.abstractFactory.ControllerAbstractFactory;
 import backEnd.patrones.controller.creacionales.prototype.ControllerPrototype;
+import backEnd.patrones.creacional.prototype.iPrototype.Unit;
 
 import java.util.Scanner;
 
@@ -84,7 +85,14 @@ public class Main {
         printer("2. Ataque Especial");
         printer("3. Movimineto");
         int option = scan.nextInt();
+        String name = null;
+        Unit unit;
+        printer("Seleccione la tropa que va a utilizar la acción");
+        printer(cp.getInfoArmy());
+        name = scan.next();
+        unit = cp.searchUnit(name);
 
+        printer(unit.getUnitInformation());
         c.performActionMain(option);
     }
 
