@@ -1,21 +1,21 @@
 package backEnd.patrones.controller.creacionales.abstractFactory;
 
 
-import backEnd.patrones.creacional.abstractFactory.abstract_Factory.Army_Unit;
+import backEnd.patrones.controller.creacionales.prototype.ControllerPrototype;
 import backEnd.patrones.creacional.abstractFactory.abstract_Factory.Dice_Obj;
 import backEnd.patrones.creacional.abstractFactory.abstract_Product.Dice;
-import backEnd.patrones.creacional.abstractFactory.abstract_Product.Unit;
 import backEnd.patrones.creacional.abstractFactory.concrete_Factory.*;
 import backEnd.patrones.creacional.abstractFactory.concrete_Factory.AttackDices.*;
-import backEnd.patrones.creacional.abstractFactory.concrete_Factory.Unit.*;
+import backEnd.patrones.creacional.prototype.iPrototype.Unit;
 
 import java.util.*;
 
-public class Controller {
+public class ControllerAbstractFactory {
 
-    public static ArrayList<Dice> diceArray = new ArrayList<Dice>();
+    public ControllerPrototype cp = new ControllerPrototype();
+    public ArrayList<Dice> diceArray = new ArrayList<Dice>();
 
-    public static String throwDice() {
+    public String throwDice() {
         throwInvocationDices();
         throwAttackDices();
 
@@ -27,7 +27,7 @@ public class Controller {
      *en el arreglo de dados el tipo de invocación obtenida.
      */
 
-    public static void throwInvocationDices() {
+    public void throwInvocationDices() {
         Dice_Obj moUnit;
 
         for (int i = 0; i < 2; i++) {
@@ -45,14 +45,14 @@ public class Controller {
         }
     }
     /**Esta funcion es la que crea la instancia del dado y la guarda en el array**/
-    public static String CreateDiceFactory(Dice_Obj pFactory) {
+    public String CreateDiceFactory(Dice_Obj pFactory) {
         Dice objDice = pFactory.createDiceInstance();
         addToArray(objDice);
         return objDice.getType();
     }
 
     /**Esta función habilita que las instancias obtenidas sean guardadas en el array**/
-    private static void addToArray(Dice pObjDice) {
+    private void addToArray(Dice pObjDice) {
         int att, spAtt, mov, inf, art, tank;
         att = countDicesPerUnit("DadoAtaque");
         spAtt = countDicesPerUnit("DadoAtaqueEspecial");
@@ -100,7 +100,7 @@ public class Controller {
      * Artilleria requiere como mínimo 3 instancias para invocar
      * Tanques requieren como mínimo 4 instancias para invocar
      **/
-    public static String countInvocationDices() {
+    public String countInvocationDices() {
         int artillery = 0, infantry = 0, tanks = 0;
         for (int i = 0; i < diceArray.size(); i++) {
             if (diceArray.get(i).getType().equals("DadoArtilleria")) {
@@ -122,12 +122,15 @@ public class Controller {
      * Como es de validación, imprime en pantalla cuando no es posible crear la tropa.
      * Cuando es posible crear la tropa, llama a la siguiente función que instancia la tropa
      */
-    public static void summonUnitMain(int unitType) {
-
+    public void summonUnitMain(int unitType, String character) {
+        Unit unit = null;
         switch (unitType) {
             case 1:
                 if (countDicesPerUnit("DadoInfanteria") >= 2) {
-                    summonUnit(unitType);
+                    unit = cp.createInfantryCharacter(character);
+                    addToArmyArray(unit);
+                    removeDicesUnit("DadoInfanteria");
+                    System.out.println(unit.getUnitInformation());
                 } else {
                     System.out.println("No se puede invocar la infantería, insuficientes dados");
                 }
@@ -135,7 +138,10 @@ public class Controller {
 
             case 2:
                 if (countDicesPerUnit("DadoArtilleria") >= 3) {
-                    summonUnit(unitType);
+                    unit = cp.createArtilleryCharacter(character);
+                    addToArmyArray(unit);
+                    removeDicesUnit("DadoArtilleria");
+                    System.out.println(unit.getUnitInformation());
                 } else {
                     System.out.println("No se puede invocar la artillería, insuficientes dados");
                 }
@@ -143,7 +149,10 @@ public class Controller {
 
             case 3:
                 if (countDicesPerUnit("DadoTanque") >= 4) {
-                    summonUnit(unitType);
+                    unit = cp.createTankCharacter(character);
+                    addToArmyArray(unit);
+                    removeDicesUnit("DadoTanque");
+                    System.out.println(unit.getUnitInformation());
                 } else {
                     System.out.println("No se puede invocar el tanque, insuficientes dados");
                 }
@@ -160,7 +169,7 @@ public class Controller {
      * la tropa dependiendo de la cantidad de instancias del dado guardadas en el array
      */
 
-    public static int countDicesPerUnit(String diceType) {
+    public int countDicesPerUnit(String diceType) {
         int total = 0;
         for (int i = 0; i < diceArray.size(); i++) {
             if (diceArray.get(i).getType().equals(diceType)) {
@@ -174,8 +183,7 @@ public class Controller {
     /**Esta función se encarga de crear la tropa dependiendo del tipo de objeto seleccionado. Luego llama a la funcion
      * que guarda la tropa en el arreglo y elimina las instancias de dados utilizadas para poder llamar la tropa
      *
-     * */
-    public static void summonUnit(int unitType) {
+    public void summonUnit(int unitType) {
         Army_Unit moUnit;
 
         switch (unitType) {
@@ -202,17 +210,17 @@ public class Controller {
         }
 
 
-    }
+    }**/
 
-    /**Función que crea la tropa y la guarda en el arreglo**/
-    public static String CreateUnitFactory(Army_Unit pFactory) {
+    /**Función que crea la tropa y la guarda en el arreglo
+    public String CreateUnitFactory(Army_Unit pFactory) {
         Unit objUnit = pFactory.createUnit();
         addToArmyArray(objUnit);
         return objUnit.getUnitInformation();
-    }
+    }**/
 
     /**Funcion que remueve las instancias utilizadas de el arreglo de invocaciones**/
-    public static void removeDicesUnit(String diceType) {
+    public void removeDicesUnit(String diceType) {
         int dicesRemoved = 0;
         switch (diceType) {
             case "DadoInfanteria":
@@ -270,13 +278,13 @@ public class Controller {
         }
     }
 
-    private static HashMap<Integer, Unit> armyArray = new HashMap<Integer, Unit>();
+    private HashMap<Integer, Unit> armyArray = new HashMap<Integer, Unit>();
 
-    private static void addToArmyArray(Unit pObjUnit) {
+    private void addToArmyArray(Unit pObjUnit) {
         armyArray.put(pObjUnit.getCode(), pObjUnit);
     }
 
-    public static String getInfoArmy() {
+    public String getInfoArmy() {
         String msData="";
         for(Map.Entry<Integer, Unit> entry : armyArray.entrySet()){
             msData = msData + entry.getValue().getUnitInformation() + "\n";
@@ -292,7 +300,7 @@ public class Controller {
 
     /**Funcionalidad que permite lanzar los dados de ataque, ataque especial y movimiento
      * El CreateDiceFactory para estos dados y para los dados de invocación es el mismo**/
-    public static void throwAttackDices() {
+    public void throwAttackDices() {
         Dice_Obj moUnit;
 
 
@@ -314,7 +322,7 @@ public class Controller {
     /**Esta función es igual a countInvocationDices(). En caso de ser necesario se pueden unir. La razón por la cual están separadas,
      * es para poder trabajarlas mejor en cosola a la hora de debuggear
      * **/
-    public static String countAttackDices() {
+    public String countAttackDices() {
         int spAtt = 0, att = 0, mov = 0;
 
         for (int i = 0; i < diceArray.size(); i++) {
@@ -334,7 +342,7 @@ public class Controller {
 
 
     /**Esta función valida que hayan los dados suficientes para poder realizar la acción de ataque, ataque especial o movimiento**/
-    public static void performActionMain(int unitType) {
+    public void performActionMain(int unitType) {
 
         switch (unitType) {
             case 1:
@@ -370,8 +378,7 @@ public class Controller {
 
     /**Esta función define que tipo de acción se va a emplear, las acciones pueden ser ataque, ataque especial o moviemiento
      * Migue llama las funciones de el en esta parte**/
-    public static void useAttack(int unitType) {
-        Army_Unit moUnit;
+    public void useAttack(int unitType) {
 
         switch (unitType) {
             case 1:
