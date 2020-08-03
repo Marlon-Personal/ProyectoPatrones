@@ -1,0 +1,25 @@
+.root {
+     -fx-background-image: url("../img/B.1.png");
+     -fx-background-repeat: stretch;
+     -fx-background-size: 782 603;
+     -fx-background-position: center center;
+
+ }
+
+.opacity{
+    -fx-opacity: 0.83;
+    -fx-background-color: red;
+    -fx-pref-height: 44;
+    -fx-pref-width: 66;
+    -fx-max-width: 50;
+    -fx-border-color: green;
+    -fx-font-family: Roboto;
+
+}
+.font{
+    -fx-spacing: 12;
+}
+
+.boder{
+    -fx-border-radius: 12;
+}
