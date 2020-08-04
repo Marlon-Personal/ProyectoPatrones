@@ -1,6 +1,7 @@
 package backEnd.patrones.creacional.prototype.prototype.Tank;
 
 
+import backEnd.patrones.comportamiento.visitor.interfaces.IVisitor;
 import backEnd.patrones.creacional.prototype.iPrototype.Tank;
 
 public class Brida extends Tank {
@@ -21,4 +22,5 @@ public class Brida extends Tank {
     public int getCode() {
         return this.getUnitCode();
     }
+
 }

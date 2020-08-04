@@ -1,5 +1,6 @@
 package main;
 
+import backEnd.patrones.controller.comportamiento.visitor.ControllerVisitor;
 import backEnd.patrones.controller.creacionales.abstractFactory.ControllerAbstractFactory;
 import backEnd.patrones.controller.creacionales.prototype.ControllerPrototype;
 import backEnd.patrones.creacional.prototype.iPrototype.Unit;
@@ -11,6 +12,7 @@ public class Main {
     private static Scanner scan = new Scanner(System.in);
     public static ControllerAbstractFactory c = new ControllerAbstractFactory();
     public static ControllerPrototype cp = new ControllerPrototype();
+    public static ControllerVisitor cV = new ControllerVisitor();
 
     public static void main(String[] args) {
         int option = 0;
@@ -18,7 +20,7 @@ public class Main {
         do {
             option = showMainMenu();
             processFunction(option);
-        } while (option !=5 );
+        } while (option !=6 );
 
     }
 
@@ -30,7 +32,9 @@ public class Main {
         printer("1. Lanzar dados");
         printer("2. Invocar tropas");
         printer("3. Realizar acciones (movimientos o ataques)");
-        printer("5. Salir");
+        printer("4. Print tropas");
+        printer("5. Aumentar ataque");
+        printer("6. Salir");
 
         return scan.nextInt();
     }
@@ -46,7 +50,14 @@ public class Main {
             case 3:
               actionsMenu();
                 break;
+            case 4:
+                printArray();
+                break;
             case 5:
+                aumentarAtaque();
+                break;
+
+            case 6:
                 printer("Gracias por usar el sistema");
                 break;
             default:
@@ -99,6 +110,24 @@ public class Main {
 
     public static void printer(String pData) {
         System.out.println(pData);
+    }
+
+    public static void printArray(){
+        printer(cp.getInfoArmy());
+    }
+
+    public static void aumentarAtaque(){
+        printArray();
+        printer("Seleccione el nombre de la tropa");
+        String nom= scan.next();
+        cV.aumentarAtaque(nom);
+        printArray();
+        printer("Tropas limpias");
+        limpiar();
+        printArray();
+    }
+    public static void limpiar(){
+        cV.limpiarVisitadores();
     }
 
 }
