@@ -12,12 +12,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="603.0" prefWidth="782.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.tl.ControllerHome">
+<AnchorPane prefHeight="628.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.tl.ControllerHome">
    <children>
       <HBox fx:id="tableroP" fillHeight="false" layoutX="273.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="503.0" prefWidth="445.0" />
-      <ImageView fitHeight="642.0" fitWidth="1172.0" layoutX="-315.0" layoutY="-3.0" opacity="0.83" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="631.0" fitWidth="1139.0" layoutX="-315.0" layoutY="-3.0" opacity="0.83" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/WhatsApp%20Image%202020-08-02%20at%206.17.38%20PM.jpeg" />
          </image>
@@ -25,12 +26,12 @@
             <GaussianBlur radius="8.5" />
          </effect>
       </ImageView>
-      <AnchorPane layoutX="1.0" layoutY="3.0" prefHeight="619.0" prefWidth="198.0" style="-fx-background-color: #2b3d52;">
+      <AnchorPane fx:id="label_infanteria" layoutX="1.0" layoutY="3.0" prefHeight="619.0" prefWidth="218.0" style="-fx-background-color: #2b3d52;">
          <effect>
             <DropShadow color="#000000be" height="35.83" radius="16.6725" spread="0.09" width="32.86" />
          </effect>
          <children>
-            <Line endX="78.5" endY="-1.52587890625E-5" layoutX="109.0" layoutY="105.0" startX="-100.0" stroke="#6b6767" />
+            <Line endX="94.5" layoutX="109.0" layoutY="105.0" startX="-100.0" stroke="#6b6767" />
             <Label layoutX="94.0" layoutY="48.0" text="TRACY" textFill="#cccccc">
                <font>
                   <Font name="Roboto Black" size="17.0" />
@@ -104,21 +105,129 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Label>
-            <JFXButton layoutX="11.0" layoutY="477.0" prefHeight="25.0" prefWidth="180.0" style="-fx-background-color: #d7d5d5;" text="TERMINAR TURNO" textFill="#2b3d52">
+            <JFXButton fx:id="terminarTurno" layoutX="11.0" layoutY="477.0" prefHeight="25.0" prefWidth="189.0" style="-fx-background-color: #d7d5d5;" text="TERMINAR TURNO" textFill="#2b3d52">
                <font>
                   <Font name="Roboto Medium" size="12.0" />
                </font>
             </JFXButton>
-            <JFXButton layoutX="12.0" layoutY="521.0" prefHeight="25.0" prefWidth="180.0" style="-fx-background-color: #d7d5d5;" text="TIRAR DADO" textFill="#2b3d52">
+            <JFXButton fx:id="tirarDado" layoutX="12.0" layoutY="521.0" onAction="#tirarDadoA" prefHeight="25.0" prefWidth="189.0" style="-fx-background-color: #d7d5d5;" text="TIRAR DADO" textFill="#2b3d52">
                <font>
                   <Font name="Roboto Medium" size="12.0" />
                </font>
             </JFXButton>
-            <JFXButton layoutX="12.0" layoutY="564.0" prefHeight="25.0" prefWidth="180.0" style="-fx-background-color: #d7d5d5;" text="INVOCAR " textFill="#2b3d52">
+            <JFXButton fx:id="invocar" layoutX="12.0" layoutY="564.0" onAction="#invocar" prefHeight="25.0" prefWidth="189.0" style="-fx-background-color: #d7d5d5;" text="INVOCAR " textFill="#2b3d52">
                <font>
                   <Font name="Roboto Medium" size="12.0" />
                </font>
             </JFXButton>
+            <Label layoutX="172.0" layoutY="172.0" prefHeight="18.0" prefWidth="11.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="label_artilleria" layoutX="172.0" layoutY="205.0" prefHeight="18.0" prefWidth="11.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="label_tanque" layoutX="172.0" layoutY="234.0" prefHeight="18.0" prefWidth="11.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="label_ataqueE" layoutX="195.0" layoutY="344.0" prefHeight="18.0" prefWidth="11.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="label_movimiento" layoutX="195.0" layoutY="380.0" prefHeight="18.0" prefWidth="11.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="label_ataque" layoutX="195.0" layoutY="409.0" prefHeight="18.0" prefWidth="11.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="panelInvocar" layoutX="210.0" layoutY="474.0" prefHeight="126.0" prefWidth="189.0" style="-fx-background-color: #2b3d52;" visible="false">
+         <children>
+            <Label layoutX="9.0" layoutY="1.0" onMouseClicked="#cerrarInvocar" prefHeight="20.0" prefWidth="10.0" text="X" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Black Italic" size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label fx:id="artilleria" layoutX="47.0" layoutY="53.0" text="ARTILLERIA" textFill="#cccccc" underline="true">
+               <font>
+                  <Font name="Roboto Black" size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label fx:id="tanque" layoutX="48.0" layoutY="85.0" text="TANQUE" textFill="#cccccc" underline="true">
+               <font>
+                  <Font name="Roboto Black" size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label fx:id="infanteria" layoutX="48.0" layoutY="21.0" onMouseClicked="#jugadoresInfanteria" text="INFANTERIA" textFill="#cccccc" underline="true">
+               <font>
+                  <Font name="Roboto Black" size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label fx:id="AETHELFLAED" layoutX="48.0" layoutY="17.0" onContextMenuRequested="#AETHELFLAEDJ" text="AETHELFLAED" textFill="#cccccc" underline="true" visible="false">
+               <font>
+                  <Font name="Roboto Medium" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="KJARTAN" layoutX="64.0" layoutY="42.0" onMouseClicked="#KJARTANJ" text="KJARTAN" textFill="#cccccc" underline="true" visible="false">
+               <font>
+                  <Font name="Roboto Medium" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="FINNAN" layoutX="70.0" layoutY="96.0" onMouseClicked="#FINNANJ" text="FINNAN" textFill="#cccccc" underline="true" visible="false">
+               <font>
+                  <Font name="Roboto Medium" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="BEOCCA" layoutX="69.0" layoutY="69.0" onMouseClicked="#BEOCCAJ" text="BEOCCA" textFill="#cccccc" underline="true" visible="false">
+               <font>
+                  <Font name="Roboto Medium" size="15.0" />
+               </font>
+            </Label>
+         </children>
+         <effect>
+            <DropShadow color="#2b3d52" height="41.76" radius="21.119999999999997" spread="0.13" width="44.72" />
+         </effect>
+      </AnchorPane>
+      <AnchorPane fx:id="preDado" layoutX="273.0" layoutY="51.0" opacity="0.84" prefHeight="503.0" prefWidth="445.0" style="-fx-background-color: #2b3d52;" visible="false">
+         <effect>
+            <GaussianBlur radius="18.75" />
+         </effect>
+      </AnchorPane>
+      <AnchorPane fx:id="tirarDadoP" layoutX="399.0" layoutY="193.0" prefHeight="239.0" prefWidth="226.0" style="-fx-background-color: transparent;" visible="false">
+         <children>
+            <Rectangle fx:id="rectangulo" arcHeight="5.0" arcWidth="5.0" fill="#b2b2b2" height="200.0" layoutX="13.0" layoutY="20.0" stroke="#a4a0a0" strokeType="INSIDE" width="200.0">
+               <effect>
+                  <DropShadow color="#cccccc" height="27.68" radius="11.67" spread="0.15" />
+               </effect>
+            </Rectangle>
+            <ImageView fitHeight="140.0" fitWidth="140.0" layoutX="42.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/SF-31.jpg" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>

@@ -16,7 +16,7 @@
             <Image url="@../img/B.1.png" />
          </image>
       </ImageView>
-      <AnchorPane fx:id="panelLogin" layoutX="226.0" layoutY="73.0" prefHeight="452.0" prefWidth="334.0" style="-fx-background-color: #0f1e33;" visible="false">
+      <AnchorPane fx:id="panelLogin" layoutX="226.0" layoutY="73.0" prefHeight="452.0" prefWidth="334.0" style="-fx-background-color: #2b3d52;" visible="false">
          <effect>
             <DropShadow color="#0f1e33" height="62.52" radius="31.5" spread="0.21" width="65.48" />
          </effect>

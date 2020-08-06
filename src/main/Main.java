@@ -67,7 +67,7 @@ public class Main {
     }
 
     public static void summonTroopsMenu() {
-        printer(c.countInvocationDices());
+        //printer(c.countInvocationDices());
         printer("Seleccione el tipo de unidad a invocar:");
         printer("1. Infantería");
         printer("2. Artillería");
