@@ -1,5 +1,6 @@
 package backEnd.patrones.creacional.prototype.prototype.Artillery;
 
+import backEnd.patrones.comportamiento.visitor.interfaces.IVisitor;
 import backEnd.patrones.creacional.prototype.iPrototype.Artillery;
 
 
@@ -21,4 +22,5 @@ public class Osferth extends Artillery {
     public int getCode() {
         return this.getUnitCode();
     }
+
 }
