@@ -6,7 +6,7 @@ public class ObservadorGame implements Observador {
     @Override
     public void update(int lifes) {
         if (lifes<1){
-            //Implementar game over
+            //Implementar game over aqui va
         }
     }
 }
