@@ -1,6 +1,4 @@
 package backEnd.patrones.controller.creacionales.abstractFactory;
-
-
 import backEnd.patrones.controller.creacionales.prototype.ControllerPrototype;
 import backEnd.patrones.creacional.abstractFactory.abstract_Factory.Dice_Obj;
 import backEnd.patrones.creacional.abstractFactory.abstract_Product.Dice;
@@ -22,6 +20,46 @@ public class ControllerAbstractFactory {
 
         return "\n" + "Dados lanzados de manera exitosa" + "\n";
     }
+
+    /*Este metodo es el mismo throwInvocationDices & throwAttackDices solamente que para la UI */
+    public String throwInvocationDicesUI() {
+        String data=null;
+        Dice_Obj moUnit;
+
+        for (int i = 0; i < 2; i++) {
+            int diceResult = Helper.throwDice();
+            if (diceResult == 1 || diceResult == 2 || diceResult == 3) {
+                moUnit = new Factory_DiceInfantry();
+                data=CreateDiceFactory(moUnit);
+            } else if (diceResult == 4 || diceResult == 5) {
+                moUnit = new Factory_DiceArtillery();
+                data=CreateDiceFactory(moUnit);
+            } else {
+                moUnit = new Factory_DiceTank();
+                data=CreateDiceFactory(moUnit);
+            }
+        }
+        return data;
+    }
+    public String throwAttackDicesUI() {
+        String data=null;
+        Dice_Obj moUnit;
+
+
+        int diceResult = Helper.throwDice();
+        if (diceResult == 1 || diceResult == 2) {
+            moUnit = new Factory_DiceAttack();
+            data=CreateDiceFactory(moUnit);
+        } else if (diceResult == 4 || diceResult == 5) {
+            moUnit = new Factory_DiceSpAttack();
+            data=CreateDiceFactory(moUnit);
+        } else {
+            moUnit = new Factory_DiceMovement();
+            data=CreateDiceFactory(moUnit);
+        }
+        return data;
+    }
+
 
 
     /**Esta función habilita el lanzamiento de los dados para invocación y y llama a la función que guarda
@@ -101,7 +139,8 @@ public class ControllerAbstractFactory {
      * Artilleria requiere como mínimo 3 instancias para invocar
      * Tanques requieren como mínimo 4 instancias para invocar
      **/
-    public String countInvocationDices() {
+    public int[] countInvocationDices() {
+        int data[]=null;
         int artillery = 0, infantry = 0, tanks = 0;
         for (int i = 0; i < diceArray.size(); i++) {
             if (diceArray.get(i).getType().equals("DadoArtilleria")) {
@@ -111,11 +150,12 @@ public class ControllerAbstractFactory {
             } else if (diceArray.get(i).getType().equals("DadoTanque")) {
                 tanks++;
             }
-        }
-        return "Dados disponibles:" + "\n" +
+        }data[0]=infantry; data[1]=artillery;data[2]=tanks;
+        return data;
+             /*   "Dados disponibles:" + "\n" +
                 "Infantería: " + infantry + "\n" +
                 "Artillería: " + artillery + "\n" +
-                "Tanque: " + tanks + "\n";
+                "Tanque: " + tanks + "\n";*/
     }
 
 
