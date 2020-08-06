@@ -16,7 +16,7 @@ public class ControllerPrototype {
     public ControllerAbstractFactory c = new ControllerAbstractFactory();
 
     /**Array para las unidades que van siendo creadas**/
-    private HashMap<String, Unit> armyArray = new HashMap<String, Unit>();
+    public static HashMap<String, Unit> armyArray = new HashMap<String, Unit>();
 
     /**ArrayLists creados solo para imprimir los nombres de los personajes en pantalla,
     *se puede usar para pintar los personajes en el UI a la hora de hacer la selección de personaje**/
