@@ -1,6 +1,7 @@
 package backEnd.patrones.creacional.prototype.prototype.Infantry;
 
 
+import backEnd.patrones.comportamiento.visitor.interfaces.IVisitor;
 import backEnd.patrones.creacional.prototype.iPrototype.Infantry;
 
 public class Beocca extends Infantry {
@@ -21,4 +22,5 @@ public class Beocca extends Infantry {
     public int getCode() {
         return this.getUnitCode();
     }
+
 }

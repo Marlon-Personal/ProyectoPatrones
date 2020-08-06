@@ -1,5 +1,7 @@
 package backEnd.patrones.creacional.prototype.iPrototype;
 
+import backEnd.patrones.comportamiento.visitor.interfaces.IVisitor;
+
 public abstract class Artillery implements Unit{
     private int unitCode;
     private String unitType;
@@ -89,4 +91,9 @@ public abstract class Artillery implements Unit{
     /**New abstract clases for prototype**/
 
     public abstract Artillery clone();
+
+    @Override
+    public void Accept(IVisitor iVisitor) {
+        iVisitor.visit(this);
+    }
 }
