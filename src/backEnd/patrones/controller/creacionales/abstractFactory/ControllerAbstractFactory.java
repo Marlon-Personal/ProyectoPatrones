@@ -12,7 +12,14 @@ public class ControllerAbstractFactory {
 
 
     public static ControllerPrototype cp = new ControllerPrototype();
+
+    //Guarda las intancias de dados del jugador 1
     public ArrayList<Dice> diceArray = new ArrayList<Dice>();
+    //Guarda las intancias de dados del jugador 2
+    public ArrayList<Dice> diceArray2 = new ArrayList<Dice>();
+
+    //Siempre que esté en true, es el turno del jugador 1
+    public boolean jugador;
 
     public String throwDice() {
         throwInvocationDices();
@@ -102,7 +109,12 @@ public class ControllerAbstractFactory {
 
         if (pObjDice.getType().equals("DadoArtilleria")||pObjDice.getType().equals("DadoInfanteria")||pObjDice.getType().equals("DadoTanque")){
             if(inf+art+tank<6){
-                diceArray.add(pObjDice);
+                //Si es el jugador uno, la variable viene positiva. Entonces guardamos en el array 1
+                if(jugador){
+                    diceArray.add(pObjDice);
+                } else {
+                    diceArray2.add(pObjDice);
+                }
             } else {
                 System.out.println("No se pueden agregar más dados de invocación, se ha alcanzado el tope máximo de 6");
             }
@@ -110,21 +122,36 @@ public class ControllerAbstractFactory {
             switch (pObjDice.getType()){
                 case "DadoAtaque":
                     if(att < 3){
-                        diceArray.add(pObjDice);
+                        //Si es el jugador uno, la variable viene positiva. Entonces guardamos en el array 1
+                        if(jugador){
+                            diceArray.add(pObjDice);
+                        } else {
+                            diceArray2.add(pObjDice);
+                        }
                     } else {
                         System.out.println("No se pueden agregar más dados de ataque, se ha alcanzado el tope máximo de 3");
                     }
                     break;
                 case "DadoAtaqueEspecial":
                     if(spAtt < 2){
-                        diceArray.add(pObjDice);
+                        //Si es el jugador uno, la variable viene positiva. Entonces guardamos en el array 1
+                        if(jugador){
+                            diceArray.add(pObjDice);
+                        } else {
+                            diceArray2.add(pObjDice);
+                        }
                     } else {
                         System.out.println("No se pueden agregar más dados de ataque especial, se ha alcanzado el tope máximo de 3");
                     }
                     break;
                 case "DadoMovimiento":
                     if(mov < 3){
-                        diceArray.add(pObjDice);
+                        //Si es el jugador uno, la variable viene positiva. Entonces guardamos en el array 1
+                        if(jugador){
+                            diceArray.add(pObjDice);
+                        } else {
+                            diceArray2.add(pObjDice);
+                        }
                     } else {
                         System.out.println("No se pueden agregar más dados de movimiento, se ha alcanzado el tope máximo de 3");
                     }
@@ -142,13 +169,25 @@ public class ControllerAbstractFactory {
     public int[] countInvocationDices() {
         int data[]=null;
         int artillery = 0, infantry = 0, tanks = 0;
-        for (int i = 0; i < diceArray.size(); i++) {
-            if (diceArray.get(i).getType().equals("DadoArtilleria")) {
-                artillery++;
-            } else if (diceArray.get(i).getType().equals("DadoInfanteria")) {
-                infantry++;
-            } else if (diceArray.get(i).getType().equals("DadoTanque")) {
-                tanks++;
+        if(jugador){
+            for (int i = 0; i < diceArray.size(); i++) {
+                if (diceArray.get(i).getType().equals("DadoArtilleria")) {
+                    artillery++;
+                } else if (diceArray.get(i).getType().equals("DadoInfanteria")) {
+                    infantry++;
+                } else if (diceArray.get(i).getType().equals("DadoTanque")) {
+                    tanks++;
+                }
+            }
+        } else {
+            for (int i = 0; i < diceArray2.size(); i++) {
+                if (diceArray2.get(i).getType().equals("DadoArtilleria")) {
+                    artillery++;
+                } else if (diceArray2.get(i).getType().equals("DadoInfanteria")) {
+                    infantry++;
+                } else if (diceArray2.get(i).getType().equals("DadoTanque")) {
+                    tanks++;
+                }
             }
         }data[0]=infantry; data[1]=artillery;data[2]=tanks;
         return data;
@@ -169,7 +208,7 @@ public class ControllerAbstractFactory {
             case 1:
                 if (countDicesPerUnit("DadoInfanteria") >= 2) {
                     unit = cp.createInfantryCharacter(character);
-                    cp.addToArmyArray(unit);
+                    cp.addToArmyArray(unit, jugador);
                     removeDicesUnit("DadoInfanteria");
                 } else {
                     System.out.println("No se puede invocar la infantería, insuficientes dados");
@@ -179,7 +218,7 @@ public class ControllerAbstractFactory {
             case 2:
                 if (countDicesPerUnit("DadoArtilleria") >= 3) {
                     unit = cp.createArtilleryCharacter(character);
-                    cp.addToArmyArray(unit);
+                    cp.addToArmyArray(unit, jugador);
                     removeDicesUnit("DadoArtilleria");
                 } else {
                     System.out.println("No se puede invocar la artillería, insuficientes dados");
@@ -189,7 +228,7 @@ public class ControllerAbstractFactory {
             case 3:
                 if (countDicesPerUnit("DadoTanque") >= 4) {
                     unit = cp.createTankCharacter(character);
-                    cp.addToArmyArray(unit);
+                    cp.addToArmyArray(unit, jugador);
                     removeDicesUnit("DadoTanque");
                 } else {
                     System.out.println("No se puede invocar el tanque, insuficientes dados");
@@ -209,71 +248,138 @@ public class ControllerAbstractFactory {
 
     public int countDicesPerUnit(String diceType) {
         int total = 0;
-        for (int i = 0; i < diceArray.size(); i++) {
-            if (diceArray.get(i).getType().equals(diceType)) {
-                total++;
+        if(jugador){
+            for (int i = 0; i < diceArray.size(); i++) {
+                if (diceArray.get(i).getType().equals(diceType)) {
+                    total++;
+                }
+            }
+        } else {
+            for (int i = 0; i < diceArray2.size(); i++) {
+                if (diceArray2.get(i).getType().equals(diceType)) {
+                    total++;
+                }
             }
         }
+
         return total;
     }
 
     /**Funcion que remueve las instancias utilizadas de el arreglo de invocaciones**/
     public void removeDicesUnit(String diceType) {
         int dicesRemoved = 0;
-        switch (diceType) {
-            case "DadoInfanteria":
-                for (int i = 0; i < diceArray.size(); i++) {
-                    if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <2) {
-                        diceArray.remove(i);
-                        dicesRemoved++;
-                        i--;
+        if(jugador){
+            switch (diceType) {
+                case "DadoInfanteria":
+                    for (int i = 0; i < diceArray.size(); i++) {
+                        if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <2) {
+                            diceArray.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
                     }
-                }
-                break;
-            case "DadoArtilleria":
-                for (int i = 0; i < diceArray.size(); i++) {
-                    if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <3) {
-                        diceArray.remove(i);
-                        dicesRemoved++;
-                        i--;
+                    break;
+                case "DadoArtilleria":
+                    for (int i = 0; i < diceArray.size(); i++) {
+                        if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <3) {
+                            diceArray.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
                     }
-                }
-                break;
-            case "DadoTanque":
-                for (int i = 0; i < diceArray.size(); i++) {
-                    if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <4) {
-                        diceArray.remove(i);
-                        dicesRemoved++;
-                        i--;
+                    break;
+                case "DadoTanque":
+                    for (int i = 0; i < diceArray.size(); i++) {
+                        if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <4) {
+                            diceArray.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
                     }
-                }
-            case "DadoAtaque":
-                for (int i = 0; i < diceArray.size(); i++) {
-                    if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <1) {
-                        diceArray.remove(i);
-                        dicesRemoved++;
-                        i--;
+                case "DadoAtaque":
+                    for (int i = 0; i < diceArray.size(); i++) {
+                        if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <1) {
+                            diceArray.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
                     }
-                }
-            case "DadoAtaqueEspecial":
-                for (int i = 0; i < diceArray.size(); i++) {
-                    if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <1) {
-                        diceArray.remove(i);
-                        dicesRemoved++;
-                        i--;
+                case "DadoAtaqueEspecial":
+                    for (int i = 0; i < diceArray.size(); i++) {
+                        if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <1) {
+                            diceArray.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
                     }
-                }
-            case "DadoMovimiento":
-                for (int i = 0; i < diceArray.size(); i++) {
-                    if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <1) {
-                        diceArray.remove(i);
-                        dicesRemoved++;
-                        i--;
+                case "DadoMovimiento":
+                    for (int i = 0; i < diceArray.size(); i++) {
+                        if (diceArray.get(i).getType().equals(diceType) & dicesRemoved <1) {
+                            diceArray.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
                     }
-                }
-            default:
-                break;
+                default:
+                    break;
+            }
+        } else {
+            switch (diceType) {
+                case "DadoInfanteria":
+                    for (int i = 0; i < diceArray2.size(); i++) {
+                        if (diceArray2.get(i).getType().equals(diceType) & dicesRemoved <2) {
+                            diceArray2.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
+                    }
+                    break;
+                case "DadoArtilleria":
+                    for (int i = 0; i < diceArray2.size(); i++) {
+                        if (diceArray2.get(i).getType().equals(diceType) & dicesRemoved <3) {
+                            diceArray2.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
+                    }
+                    break;
+                case "DadoTanque":
+                    for (int i = 0; i < diceArray2.size(); i++) {
+                        if (diceArray2.get(i).getType().equals(diceType) & dicesRemoved <4) {
+                            diceArray2.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
+                    }
+                case "DadoAtaque":
+                    for (int i = 0; i < diceArray2.size(); i++) {
+                        if (diceArray2.get(i).getType().equals(diceType) & dicesRemoved <1) {
+                            diceArray2.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
+                    }
+                case "DadoAtaqueEspecial":
+                    for (int i = 0; i < diceArray2.size(); i++) {
+                        if (diceArray2.get(i).getType().equals(diceType) & dicesRemoved <1) {
+                            diceArray2.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
+                    }
+                case "DadoMovimiento":
+                    for (int i = 0; i < diceArray2.size(); i++) {
+                        if (diceArray2.get(i).getType().equals(diceType) & dicesRemoved <1) {
+                            diceArray2.remove(i);
+                            dicesRemoved++;
+                            i--;
+                        }
+                    }
+                default:
+                    break;
+            }
         }
+
     }
 
 
@@ -307,16 +413,28 @@ public class ControllerAbstractFactory {
      * **/
     public String countAttackDices() {
         int spAtt = 0, att = 0, mov = 0;
-
-        for (int i = 0; i < diceArray.size(); i++) {
-            if (diceArray.get(i).getType().equals("DadoAtaque")) {
-                att++;
-            } else if (diceArray.get(i).getType().equals("DadoAtaqueEspecial")) {
-                spAtt++;
-            } else if (diceArray.get(i).getType().equals("DadoMovimiento")) {
-                mov++;
+        if(jugador){
+            for (int i = 0; i < diceArray.size(); i++) {
+                if (diceArray.get(i).getType().equals("DadoAtaque")) {
+                    att++;
+                } else if (diceArray.get(i).getType().equals("DadoAtaqueEspecial")) {
+                    spAtt++;
+                } else if (diceArray.get(i).getType().equals("DadoMovimiento")) {
+                    mov++;
+                }
+            }
+        } else {
+            for (int i = 0; i < diceArray2.size(); i++) {
+                if (diceArray2.get(i).getType().equals("DadoAtaque")) {
+                    att++;
+                } else if (diceArray2.get(i).getType().equals("DadoAtaqueEspecial")) {
+                    spAtt++;
+                } else if (diceArray2.get(i).getType().equals("DadoMovimiento")) {
+                    mov++;
+                }
             }
         }
+
         return "Dados de acción disponibles:" + "\n" +
                 "Ataque: " + att + "\n" +
                 "Ataque Especial: " + spAtt + "\n" +
@@ -387,4 +505,59 @@ public class ControllerAbstractFactory {
         }
 
     }
+
+
+    /**Controla todo lo relacionado a los turnos de los jugadores**/
+    public String getPlayer(){
+        if(jugador){
+            return "Jugador 1";
+        } else {
+            return "Jugador 2";
+        }
+    }
+
+    public void startPlayer1(){
+        jugador = true;
+    }
+
+    public void endTurn(){
+        if(jugador){
+            jugador = false;
+        } else {
+            jugador = true;
+        }
+    }
+
+    /**para pruebas en main de consola
+     **/
+    public String countInvocationDicesTest() {
+        int artillery = 0, infantry = 0, tanks = 0;
+        if(jugador){
+            for (int i = 0; i < diceArray.size(); i++) {
+                if (diceArray.get(i).getType().equals("DadoArtilleria")) {
+                    artillery++;
+                } else if (diceArray.get(i).getType().equals("DadoInfanteria")) {
+                    infantry++;
+                } else if (diceArray.get(i).getType().equals("DadoTanque")) {
+                    tanks++;
+                }
+            }
+        } else {
+            for (int i = 0; i < diceArray2.size(); i++) {
+                if (diceArray2.get(i).getType().equals("DadoArtilleria")) {
+                    artillery++;
+                } else if (diceArray2.get(i).getType().equals("DadoInfanteria")) {
+                    infantry++;
+                } else if (diceArray2.get(i).getType().equals("DadoTanque")) {
+                    tanks++;
+                }
+            }
+        }
+
+        return "Dados disponibles:" + "\n" +
+                "Infantería: " + infantry + "\n" +
+                "Artillería: " + artillery + "\n" +
+                "Tanque: " + tanks + "\n";
+    }
+
 }
