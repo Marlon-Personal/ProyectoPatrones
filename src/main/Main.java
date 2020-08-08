@@ -16,17 +16,18 @@ public class Main {
 
     public static void main(String[] args) {
         int option = 0;
-
+        c.startPlayer1();
+        cp.startPlayer1();
         do {
             option = showMainMenu();
             processFunction(option);
-        } while (option !=6 );
+        } while (option !=7 );
 
     }
 
 
     private static int showMainMenu() {
-
+        printer(c.getPlayer());
         printer("Menú principal");
         printer("Seleccione una opción");
         printer("1. Lanzar dados");
@@ -34,7 +35,8 @@ public class Main {
         printer("3. Realizar acciones (movimientos o ataques)");
         printer("4. Print tropas");
         printer("5. Aumentar ataque");
-        printer("6. Salir");
+        printer("6. Terminar turno");
+        printer("7. Salir");
 
         return scan.nextInt();
     }
@@ -42,13 +44,13 @@ public class Main {
     public static void processFunction(int option ) {
         switch (option) {
             case 1:
-              c.throwDice();
+                c.throwDice();
                 break;
             case 2:
-               summonTroopsMenu();
+                summonTroopsMenu();
                 break;
             case 3:
-              actionsMenu();
+                actionsMenu();
                 break;
             case 4:
                 printArray();
@@ -56,8 +58,11 @@ public class Main {
             case 5:
                 aumentarAtaque();
                 break;
-
             case 6:
+                c.endTurn();
+                cp.endTurn();
+                break;
+            case 7:
                 printer("Gracias por usar el sistema");
                 break;
             default:
@@ -67,11 +72,12 @@ public class Main {
     }
 
     public static void summonTroopsMenu() {
-        //printer(c.countInvocationDices());
+        printer(c.countInvocationDicesTest());
         printer("Seleccione el tipo de unidad a invocar:");
         printer("1. Infantería");
         printer("2. Artillería");
         printer("3. Tanque");
+        printer("4. Salir");
         int option = scan.nextInt();
         String characther;
 
@@ -84,6 +90,8 @@ public class Main {
         } else
         if(option == 3){
             printer(cp.returnTank());
+        } else if (option ==4){
+            printer("Regresando al menú principal");
         }
         characther = scan.next();
         c.summonUnitMain(option, characther);
@@ -95,16 +103,21 @@ public class Main {
         printer("1. Ataque");
         printer("2. Ataque Especial");
         printer("3. Movimineto");
+        printer("4. Salir");
         int option = scan.nextInt();
         String name = null;
         Unit unit;
-        printer("Seleccione la tropa que va a utilizar la acción");
-        printer(cp.getInfoArmy());
-        name = scan.next();
-        unit = cp.searchUnit(name);
+        if(option == 4){
+            printer("Saliendo del menú de ataques");
+        } else {
+            printer("Seleccione la tropa que va a utilizar la acción");
+            printer(cp.getInfoArmy());
+            name = scan.next();
+            unit = cp.searchUnit(name);
 
-        printer(unit.getUnitInformation());
-        c.performActionMain(option);
+            printer(unit.getUnitInformation());
+            c.performActionMain(option);
+        }
     }
 
 

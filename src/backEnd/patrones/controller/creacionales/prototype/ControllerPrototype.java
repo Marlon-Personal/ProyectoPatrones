@@ -18,8 +18,13 @@ public class ControllerPrototype {
     /**Array para las unidades que van siendo creadas**/
     public static HashMap<String, Unit> armyArray = new HashMap<String, Unit>();
 
+    /**Array para las unidades que van siendo creadas del jugador 2**/
+    public static HashMap<String, Unit> armyArray2 = new HashMap<String, Unit>();
+
+    public boolean jugador;
+
     /**ArrayLists creados solo para imprimir los nombres de los personajes en pantalla,
-    *se puede usar para pintar los personajes en el UI a la hora de hacer la selección de personaje**/
+     *se puede usar para pintar los personajes en el UI a la hora de hacer la selección de personaje**/
     public ArrayList<String> artilleryArray = new ArrayList<String>();
     public ArrayList<String> infantryArray = new ArrayList<String>();
     public ArrayList<String> tankArray = new ArrayList<String>();
@@ -47,7 +52,7 @@ public class ControllerPrototype {
 
 
     /**Regresa la lista de personajes dentro del array de artilleria**/
-        public String returnArtillery(){
+    public String returnArtillery(){
         String list = "";
         for(int i = 0; i < artilleryArray.size(); i++){
             list += artilleryArray.get(i) + "\n";
@@ -57,7 +62,7 @@ public class ControllerPrototype {
 
     /**Es llamado desde el controlador de la fabrica abstracta, donde se toma la lógica de los dados
      * Se encarga de crear el personaje de artilleria según su nombre*/
-    public Artillery createArtilleryCharacter(String characther){
+    public Artillery createArtilleryCharacter(String characther ){
         switch (characther){
             case "Leofric":
                 if(funcionSingleton(characther)) {
@@ -66,11 +71,26 @@ public class ControllerPrototype {
                     return null;
                 }
             case "Osferth":
-                return new Osferth();
+                if(funcionSingleton(characther)) {
+                    return new Osferth();
+                } else {
+                    return null;
+                }
+
             case "Iseult":
-                return new Iseult();
+                if(funcionSingleton(characther)) {
+                    return new Iseult();
+                } else {
+                    return null;
+                }
+
             case "Uhthred":
-                return new Uhthred();
+                if(funcionSingleton(characther)) {
+                    return new Uhthred();
+                } else {
+                    return null;
+                }
+
             default:
                 break;
         }
@@ -91,7 +111,7 @@ public class ControllerPrototype {
 
     /**Es llamado desde el controlador de la fabrica abstracta, donde se toma la lógica de los dados
      * Se encarga de crear el personaje de infanteria según su nombre*/
-    public Infantry createInfantryCharacter(String characther){
+    public Infantry createInfantryCharacter(String characther ){
         switch (characther){
             case "Aethelflaed":
                 if(funcionSingleton(characther)) {
@@ -141,11 +161,17 @@ public class ControllerPrototype {
                     return new Brida();
                 } else return null;
             case "Heasten":
-                return new Haesten();
+                if(funcionSingleton(characther)){
+                    return new Haesten();
+                } else return null;
             case "Guthrum":
-                return new Guthrum();
+                if(funcionSingleton(characther)){
+                    return new Guthrum();
+                } else return null;
             case "Odda":
-                return new Odda();
+                if(funcionSingleton(characther)){
+                    return new Odda();
+                } else return null;
             default:
                 break;
         }
@@ -153,53 +179,111 @@ public class ControllerPrototype {
     }
 
     public boolean funcionSingleton(String name){
-       if(armyArray.size()>0){
-           if(searchUnit(name) == null){
-               return true;
-           }else{
-               System.out.println("El personaje ya ha sido agregado, no puede invocar dos veces el mismo personaje");
-               return false;
-           }
-       } else {
-           return true;
-       }
+        if(jugador){
+            if(armyArray.size()>0){
+                if(searchUnit(name) == null){
+                    return true;
+                }else{
+                    System.out.println("El personaje ya ha sido agregado, no puede invocar dos veces el mismo personaje");
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        } else {
+            if(armyArray2.size()>0){
+                if(searchUnit(name) == null){
+                    return true;
+                }else{
+                    System.out.println("El personaje ya ha sido agregado, no puede invocar dos veces el mismo personaje");
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        }
+
     }
 
-    public void addToArmyArray(Unit pObjUnit) {
-       if(pObjUnit != null){
-           armyArray.put(pObjUnit.getName(), pObjUnit);
-       }
+    public void addToArmyArray(Unit pObjUnit, boolean jugador) {
+        if(jugador){
+            if(pObjUnit != null){
+                armyArray.put(pObjUnit.getName(), pObjUnit);
+            }
+        } else {
+            if(pObjUnit != null){
+                armyArray2.put(pObjUnit.getName(), pObjUnit);
+            }
+        }
+
     }
 
     public String getInfoArmy() {
         String msData="";
-        for(Map.Entry<String, Unit> entry : armyArray.entrySet()){
-            msData = msData + entry.getValue().getUnitInformation() + "\n";
+        if(jugador){
+            for(Map.Entry<String, Unit> entry : armyArray.entrySet()){
+                msData = msData + entry.getValue().getUnitInformation() + "\n";
+            }
+        } else {
+            for(Map.Entry<String, Unit> entry : armyArray2.entrySet()){
+                msData = msData + entry.getValue().getUnitInformation() + "\n";
+            }
         }
+
 
         return msData;
     }
 
     public Unit searchUnit(String name){
         boolean exists = false;
-
-        if(armyArray.size()>0){
-            for(Map.Entry<String, Unit> entry : armyArray.entrySet()){
-                if(entry.getKey().equals(name)){
-                    exists = true;
+        if(jugador){
+            if(armyArray.size()>0){
+                for(Map.Entry<String, Unit> entry : armyArray.entrySet()){
+                    if(entry.getKey().equals(name)){
+                        exists = true;
+                    }
                 }
+
+            } else {
+                return armyArray.get(name);
             }
 
+            if(exists){
+                return armyArray.get(name);
+            } else {
+                return null;
+            }
         } else {
-            return armyArray.get(name);
+            if(armyArray2.size()>0){
+                for(Map.Entry<String, Unit> entry : armyArray2.entrySet()){
+                    if(entry.getKey().equals(name)){
+                        exists = true;
+                    }
+                }
+
+            } else {
+                return armyArray2.get(name);
+            }
+
+            if(exists){
+                return armyArray2.get(name);
+            } else {
+                return null;
+            }
         }
 
-        if(exists){
-         return armyArray.get(name);
+    }
+
+    public void endTurn(){
+        if(jugador){
+            jugador = false;
         } else {
-            return null;
+            jugador = true;
         }
     }
 
+    public void startPlayer1(){
+        jugador = true;
+    }
 
 }
