@@ -30,14 +30,35 @@ public class ControllerAbstractFactory {
 
     /*Este metodo es el mismo throwInvocationDices & throwAttackDices solamente que para la UI */
     public String throwInvocationDicesUI() {
-        String data=null;
+        String data="";
         Dice_Obj moUnit;
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
+            int diceResult = Helper.throwDice();
+            if (diceResult == 1 || diceResult == 2 || diceResult == 3) {
+                moUnit = new Factory_DiceInfantry();
+                data= CreateDiceFactory(moUnit);
+                // System.out.println("El resultado del dado fue: " + diceResult + "\n" + "De tipo: " + CreateDiceFactory(moUnit));
+            } else if (diceResult == 4 || diceResult == 5) {
+                moUnit = new Factory_DiceArtillery();
+                data= CreateDiceFactory(moUnit);
+            } else {
+                moUnit = new Factory_DiceTank();
+                data= CreateDiceFactory(moUnit);
+            }
+        }
+        return data;
+    }
+    public String throwInvocationDicesUI2() {
+        String data="";
+        Dice_Obj moUnit;
+
+        for (int i = 0; i < 1; i++) {
             int diceResult = Helper.throwDice();
             if (diceResult == 1 || diceResult == 2 || diceResult == 3) {
                 moUnit = new Factory_DiceInfantry();
                 data=CreateDiceFactory(moUnit);
+                // System.out.println("El resultado del dado fue: " + diceResult + "\n" + "De tipo: " + CreateDiceFactory(moUnit));
             } else if (diceResult == 4 || diceResult == 5) {
                 moUnit = new Factory_DiceArtillery();
                 data=CreateDiceFactory(moUnit);
@@ -49,20 +70,23 @@ public class ControllerAbstractFactory {
         return data;
     }
     public String throwAttackDicesUI() {
-        String data=null;
+        String data = null;
         Dice_Obj moUnit;
 
 
         int diceResult = Helper.throwDice();
         if (diceResult == 1 || diceResult == 2) {
             moUnit = new Factory_DiceAttack();
-            data=CreateDiceFactory(moUnit);
+            data= CreateDiceFactory(moUnit);
+            //System.out.println("El resultado del dado de ataques y movimiento fue: " + diceResult + "\n" + "De tipo: " + CreateDiceFactory(moUnit));
         } else if (diceResult == 4 || diceResult == 5) {
             moUnit = new Factory_DiceSpAttack();
-            data=CreateDiceFactory(moUnit);
+            data= CreateDiceFactory(moUnit);
+            //System.out.println("El resultado del dado de ataques y movimiento fue: " + diceResult + "\n" + "De tipo: " + CreateDiceFactory(moUnit));
         } else {
             moUnit = new Factory_DiceMovement();
             data=CreateDiceFactory(moUnit);
+           // System.out.println("El resultado del dado de ataques y movimiento fue: " + diceResult + "\n" + "De tipo: " + CreateDiceFactory(moUnit));
         }
         return data;
     }
@@ -240,6 +264,52 @@ public class ControllerAbstractFactory {
 
         }
 
+    }
+
+
+    //Funcion para la UI
+    public String summonUnitMainUI(int unitType, String character) {
+        String data="";
+        Unit unit = null;
+        switch (unitType) {
+            case 1:
+                if (countDicesPerUnit("DadoInfanteria") >= 2) {
+                    unit = cp.createInfantryCharacter(character);
+                    cp.addToArmyArray(unit, jugador);
+                    removeDicesUnit("DadoInfanteria");
+                    data="Tropo de infateria creada,seleccione donde desea colocarla";
+                } else {
+                    data="No se puede invocar la infantería, insuficientes dados";
+                }
+                break;
+
+            case 2:
+                if (countDicesPerUnit("DadoArtilleria") >= 3) {
+                    unit = cp.createArtilleryCharacter(character);
+                    cp.addToArmyArray(unit, jugador);
+                    removeDicesUnit("DadoArtilleria");
+                    data="Tropo de artilleria creada";
+                } else {
+                    data="No se puede invocar la artilleria, insuficientes dados";
+                }
+                break;
+
+            case 3:
+                if (countDicesPerUnit("DadoTanque") >= 4) {
+                    unit = cp.createTankCharacter(character);
+                    cp.addToArmyArray(unit, jugador);
+                    removeDicesUnit("DadoTanque");
+                    data="Tropo de tanque creada";
+                } else {
+                    data="No se puede invocar el tanque, insuficientes dados";
+                }
+                break;
+
+            default:
+                break;
+
+        }
+        return data;
     }
 
     /**Esta función simplemente hace un conteo indivual por tipo de tropa para reconcer de manera más rápida si es posible invocar
@@ -441,6 +511,33 @@ public class ControllerAbstractFactory {
                 "Movimiento: " + mov + "\n";
     }
 
+    //metodo exclusivo de la UI
+    public int[] countAttackDicesUI() {
+        int spAtt = 0, att = 0, mov = 0;
+        if(jugador){
+            for (int i = 0; i < diceArray.size(); i++) {
+                if (diceArray.get(i).getType().equals("DadoAtaque")) {
+                    att++;
+                } else if (diceArray.get(i).getType().equals("DadoAtaqueEspecial")) {
+                    spAtt++;
+                } else if (diceArray.get(i).getType().equals("DadoMovimiento")) {
+                    mov++;
+                }
+            }
+        } else {
+            for (int i = 0; i < diceArray2.size(); i++) {
+                if (diceArray2.get(i).getType().equals("DadoAtaque")) {
+                    att++;
+                } else if (diceArray2.get(i).getType().equals("DadoAtaqueEspecial")) {
+                    spAtt++;
+                } else if (diceArray2.get(i).getType().equals("DadoMovimiento")) {
+                    mov++;
+                }
+            }
+        }
+        int[] intArray = new int[]{ att,spAtt,mov};
+        return intArray;
+    }
 
     /**Esta función valida que hayan los dados suficientes para poder realizar la acción de ataque, ataque especial o movimiento**/
     public void performActionMain(int unitType) {
@@ -560,4 +657,34 @@ public class ControllerAbstractFactory {
                 "Tanque: " + tanks + "\n";
     }
 
+    //Metodo para la UI
+    public int[] countInvocationDicesTestUI() {
+        int artillery = 0, infantry = 0, tanks = 0;
+        if(jugador){
+            for (int i = 0; i < diceArray.size(); i++) {
+                if (diceArray.get(i).getType().equals("DadoArtilleria")) {
+                    artillery++;
+                } else if (diceArray.get(i).getType().equals("DadoInfanteria")) {
+                    infantry++;
+                } else if (diceArray.get(i).getType().equals("DadoTanque")) {
+                    tanks++;
+                }
+            }
+        } else {
+            for (int i = 0; i < diceArray2.size(); i++) {
+                if (diceArray2.get(i).getType().equals("DadoArtilleria")) {
+                    artillery++;
+                } else if (diceArray2.get(i).getType().equals("DadoInfanteria")) {
+                    infantry++;
+                } else if (diceArray2.get(i).getType().equals("DadoTanque")) {
+                    tanks++;
+                }
+            }
+        }
+        int data[]=new int[]{infantry,artillery,tanks};
+        //data[0]=infantry;
+        //data[1]=artillery;
+        //data[2]=tanks;
+        return data;
+    }
 }
