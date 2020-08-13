@@ -50,6 +50,7 @@ public class Main {
                 summonTroopsMenu();
                 break;
             case 3:
+                cp.serchInfoArmyUI("Finnan");
                 actionsMenu();
                 break;
             case 4:

@@ -14,14 +14,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+
+import java.io.File;
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -35,6 +40,7 @@ public class ControllerHome implements Initializable {
     @FXML private AnchorPane panelInvocarTanque;
     @FXML private  AnchorPane panelResult;
     @FXML private  AnchorPane panelResult2;
+    @FXML private  AnchorPane panelInfoTropas;
     @FXML private JFXButton terminarTurno;
     @FXML private JFXButton tirarDado;
     @FXML private JFXButton invocar;
@@ -54,6 +60,13 @@ public class ControllerHome implements Initializable {
     @FXML private Label resultDado3;
     @FXML private Label campoNombreJ;
     @FXML private Label resultInvocacion;
+    @FXML private Label TInfanteria;
+    @FXML private Label TNombre;
+    @FXML private Label TCodigo;
+    @FXML private Label TAtaque;
+    @FXML private Label TMovimiento;
+    @FXML private Label TDefensa;
+    @FXML private Label TPasos;
     @FXML private Rectangle rectangulo;
     private int jugador=1;
     private String color="red";
@@ -64,10 +77,12 @@ public class ControllerHome implements Initializable {
     RotateTransition rotate = new RotateTransition();
     private ControllerPrototype gestorPrototype=new ControllerPrototype();
     private ControllerAbstractFactory gestorAbstractFactory=new ControllerAbstractFactory();
-
+    HashMap<String, String> Tropas= new HashMap<String, String>();
+    ArrayList<String>ids=new ArrayList<>();
     int px=0;
     int pj=0;
     int p1=0;
+    String tropaActual="N/A";
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         gestorAbstractFactory.startPlayer1();
@@ -77,14 +92,22 @@ public class ControllerHome implements Initializable {
             px++;
             VBox vbox = new VBox();
             for(int j=0; j<9;j++){
-                Button button=new Button();
-                button.setId(i+","+j);
-                button.setStyle("    -fx-pref-height: 70;\n" +
+                Pane pane=new Pane();
+                pane.setId(i+","+j);
+                pane.setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color:  #2b3d52; -fx-background-color: #517d80;");
-                button.setOnAction(event -> {
-                   verificarFigura(button.getId());
+                pane.setOnMouseClicked(event -> {
+                    verificarFigura(pane.getId());
                 });
-                vbox.getChildren().add(button);
+              //   Button button=new Button();
+                // button.setId(i+","+j);
+               //  button.setStyle("    -fx-pref-height: 70;\n" +
+                    //  "    -fx-pref-width: 70; -fx-border-color:  #2b3d52; -fx-background-color: #517d80;");
+
+              // button.setOnAction(event -> {
+              //     verificarFigura(button.getId());
+              //  });
+                vbox.getChildren().add(pane);
             }
 
             tablerosP.getChildren().add(vbox);
@@ -97,140 +120,35 @@ public class ControllerHome implements Initializable {
         int cont3=0;
         idB=id;
         String[] arrOfStr = id.split(",", 2);
-        System.out.printf(arrOfStr[0]+"\n");
-        System.out.printf(arrOfStr[1]+"\n");
          p1= Integer.parseInt(arrOfStr[1]);
-        //este es el que selecciona
-        VBox node1=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0]));
-        VBox node=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0])+1);
-        VBox node2=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0]));
-        VBox node3=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0]));
-        VBox node4=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0])+1);
-        if(p1==8){
-            if(jugador==1){
-                cont=0;
-                cont2=0;
-                cont3=0;
-                if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
-                    cont++;
-                }else if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("yellow")){
-                    cont++;
-                }else if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
-                    cont++;
-                }
-
-                if( node3.getChildren().get(Integer.parseInt(arrOfStr[1])-2).getStyle().contains("yellow")){
-                    cont2++;
-                }else if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
-                    cont2++;
-                }else if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("yellow")){
-                    cont2++;
-                }else if(node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("yellow")){
-                    cont2++;
-                }
-
-                if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
-                    cont3++;
-                }else if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("yellow")){
-                    cont3++;
-                }else if(node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("yellow")){
-                    cont3++;
-                }
-            }else{
-                cont=0;
-                cont2=0;
-                cont3=0;
-                if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                    cont++;
-                }else if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("red")){
-                    cont++;
-                }else if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                    cont++;
-                }
-
-                if( node3.getChildren().get(Integer.parseInt(arrOfStr[1])-2).getStyle().contains("red")){
-                    cont2++;
-                }else if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                    cont2++;
-                }else if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("red")){
-                    cont2++;
-                }else if(node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("red")){
-                    cont2++;
-                }
-
-                if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                    cont3++;
-                }else if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("red")){
-                    cont3++;
-                }else if(node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("red")){
-                    cont3++;
-                }
-            }
-        }
-        else if(p1!=8 && p1!=0){
-            if(jugador==1){
-                cont=0;
-                cont2=0;
-                cont3=0;
-                if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
-                    cont++;
-                }else if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("yellow")){
-                    cont++;
-                }else if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
-                    cont++;
-                }
-
-                if( node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1).getStyle().contains("yellow")){
-                    cont2++;
-                }else if(node.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
-                    cont2++;
-                }else if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("yellow")){
-                    cont2++;
-                }else if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
-                    cont2++;
-                }
-
-                if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).getStyle().contains("yellow")){
-                    cont3++;
-                }else if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
-                    cont3++;
-                }else if(node.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
-                    cont3++;
-                }
-            }else{
-                if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                    cont++;
-                }else if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("red")){
-                    cont++;
-                }else if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                    cont++;
-                }
-
-                if( node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1).getStyle().contains("red")){
-                    cont2++;
-                }else if(node.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                    cont2++;
-                }else if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).getStyle().contains("red")){
-                    cont++;
-                }else if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                    cont2++;
-                }
-
-                if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).getStyle().contains("red")){
-                    cont3++;
-                }else if(node1.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                    cont3++;
-                }else if(node.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                    cont3++;
-                }
-            }
-        }
-        if(cont==0 && cont2==0 && cont3==0){
-            tablerosP.setVisible(false);
-            pFiguras.setVisible(true);
-        }
-
-
+         if(tropaActual.equals("N/A")){
+             buscarHasMap();
+             if(ids.contains(id)){
+                 String data[]=gestorPrototype.serchInfoArmyUI(buscarHasMap2(id));
+                 for (int i = 0; i <data.length ; i++) {
+                     //data 0 nombre
+                     //data 1 codigo
+                     //data 2 ataque
+                     //data 3 defensa
+                     //data 4 movimiento
+                     TNombre.setText(data[0]);
+                     TCodigo.setText(data[1]);
+                     TAtaque.setText(data[2]);
+                     TDefensa.setText(data[3]);
+                     TMovimiento.setText(data[4]);
+                     tablerosP.setVisible(false);
+                     panelInfoTropas.setVisible(true);
+                 }
+             }else {
+                 tablerosP.setVisible(false);
+                 pFiguras.setVisible(true);
+             }
+         }else{
+             Tropas.put(tropaActual,id);
+             tropaActual="N/A";
+             tablerosP.setVisible(false);
+             pFiguras.setVisible(true);
+         }
 
     }
 
@@ -257,6 +175,7 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/3.png";
+        tropaActual="Aethelflaedj";
     }
 
     public void KJARTANJ(MouseEvent mouseEvent) {
@@ -265,6 +184,7 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/2.png";
+        tropaActual="Kjartan";
     }
 
     public void FINNANJ(MouseEvent mouseEvent) {
@@ -273,7 +193,23 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/1.png";
-
+        tropaActual="Finnan";
+    }
+    public void buscarHasMap(){
+        for (String i : Tropas.keySet()) {
+          //  System.out.println("key: " + i + " value: " + Tropas.get(i));
+            ids.add(Tropas.get(i));
+        }
+    }
+    public String buscarHasMap2(String id){
+        String data="";
+        for (String i : Tropas.keySet()) {
+            //  System.out.println("key: " + i + " value: " + Tropas.get(i));
+            if(Tropas.get(i).equals(id)){
+                data=  i;
+            }
+        }
+        return data;
     }
 
     public void BEOCCAJ(MouseEvent mouseEvent) {
@@ -282,6 +218,7 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/4.png";
+        tropaActual="Beocca";
     }
 
     public String invocacionDada1(){
@@ -397,7 +334,7 @@ public class ControllerHome implements Initializable {
         if(p1==8){
             BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
             Background background = new Background(backgroundImage);
-            Button button = (Button) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+            Pane button = (Pane) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
             button.setBackground(background);
             node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
@@ -451,14 +388,20 @@ public class ControllerHome implements Initializable {
         pFiguras.setVisible(false);
         tablerosP.setVisible(true);
         if(p1==8){
+
+            BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+            Background background = new Background(backgroundImage);
+            Pane button = (Pane) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+            button.setBackground(background);
+
             node3.getChildren().get(Integer.parseInt(arrOfStr[1])-2).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
-            node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:green;");
+            //node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
+                   // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:black;");
             node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
                     "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
             node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:white;");
 
         }
         else{
@@ -543,6 +486,7 @@ public class ControllerHome implements Initializable {
 
     public void cerrarFigura(MouseEvent mouseEvent) {
         pFiguras.setVisible(false);
+        tablerosP.setVisible(true);
     }
 
     public void cerrarInvocacin(MouseEvent mouseEvent) {
@@ -596,6 +540,7 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/8.png";
+        tropaActual="Guthrum";
     }
 
     public void HAESTEN(MouseEvent mouseEvent) {
@@ -605,6 +550,7 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/7.png";
+        tropaActual="Haesten";
     }
 
     public void ODDA(MouseEvent mouseEvent) {
@@ -614,6 +560,7 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/6.png";
+        tropaActual="Odda";
     }
 
     public void BRIDA(MouseEvent mouseEvent) {
@@ -623,6 +570,7 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/5.png";
+        tropaActual="Brida";
     }
 
     public void jugadoresArtilleria(MouseEvent mouseEvent) {
@@ -640,6 +588,7 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/10.png";
+        tropaActual="Uhthred";
     }
 
     public void OSFERTH(MouseEvent mouseEvent) {
@@ -649,6 +598,7 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/11.png";
+        tropaActual="Osferth";
     }
 
     public void ISEULT(MouseEvent mouseEvent) {
@@ -658,6 +608,7 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/12.png";
+        tropaActual="Iseult";
     }
 
     public void LEOFIRC(MouseEvent mouseEvent) {
@@ -667,5 +618,11 @@ public class ControllerHome implements Initializable {
         panelResult2.setVisible(true);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/13.png";
+        tropaActual="Leofirc";
+    }
+
+    public void cerrarInfoTropa(MouseEvent mouseEvent) {
+        panelInfoTropas.setVisible(false);
+        tablerosP.setVisible(true);
     }
 }
