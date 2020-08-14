@@ -19,17 +19,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.awt.*;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 
+
 public class Controller implements Initializable {
     @FXML private AnchorPane panelLogin;
     @FXML private ImageView img1;
+    @FXML private Label nombreJ1;
+    @FXML private Label nombreJ2;
+    public String jugadorN1;
+    public String jugadorN2;
     int seconds=0;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -49,6 +52,8 @@ public class Controller implements Initializable {
     }
 
     public void login(ActionEvent event) {
+        jugadorN1=nombreJ1.getText();
+        jugadorN2=nombreJ2.getText();
         new ToScene().toScene("../sample/home.fxml", event);
     }
 }

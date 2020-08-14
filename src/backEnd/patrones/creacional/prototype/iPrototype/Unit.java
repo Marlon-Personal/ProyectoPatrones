@@ -6,7 +6,7 @@ public interface Unit {
     public int generateUnitCode();
 
     public String getUnitInformation();
-
+    public String  getUnitInformationUI();
     public int getCode();
     public String getName();
     public void Accept(IVisitor iVisitor);

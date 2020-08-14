@@ -88,6 +88,10 @@ public abstract class Artillery implements Unit{
                 ", y un movimiento total de: " + getUnitHP();
     }
 
+    //Solamente para UI
+    public String getUnitInformationUI() {
+        return getUnitType();
+    }
     /**New abstract clases for prototype**/
 
     public abstract Artillery clone();

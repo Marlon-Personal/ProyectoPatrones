@@ -13,7 +13,7 @@
    <children>
       <ImageView fx:id="img1" fitHeight="610.0" fitWidth="798.0" layoutX="-8.0" pickOnBounds="true">
          <image>
-            <Image url="@../img/B.1.png" />
+            <Image url="@../principal/B.1.png" />
          </image>
       </ImageView>
       <AnchorPane fx:id="panelLogin" layoutX="226.0" layoutY="73.0" prefHeight="452.0" prefWidth="334.0" style="-fx-background-color: #2b3d52;" visible="false">
@@ -26,12 +26,12 @@
                   <Font name="Roboto Medium" size="28.0" />
                </font>
             </Label>
-            <Label layoutX="32.0" layoutY="120.0" text="JUGADOR 1" textFill="WHITE">
+            <Label fx:id="nombreJ1" layoutX="32.0" layoutY="120.0" text="JUGADOR 1" textFill="WHITE">
                <font>
                   <Font name="Roboto Medium" size="17.0" />
                </font>
             </Label>
-            <Label layoutX="32.0" layoutY="242.0" text="JUGADOR 2" textFill="WHITE">
+            <Label fx:id="nombreJ2" layoutX="32.0" layoutY="242.0" text="JUGADOR 2" textFill="WHITE">
                <font>
                   <Font name="Roboto Medium" size="17.0" />
                </font>

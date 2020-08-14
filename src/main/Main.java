@@ -50,6 +50,7 @@ public class Main {
                 summonTroopsMenu();
                 break;
             case 3:
+                cp.serchInfoArmyUI("Finnan");
                 actionsMenu();
                 break;
             case 4:
@@ -114,7 +115,6 @@ public class Main {
             printer(cp.getInfoArmy());
             name = scan.next();
             unit = cp.searchUnit(name);
-
             printer(unit.getUnitInformation());
             c.performActionMain(option);
         }
