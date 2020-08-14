@@ -574,6 +574,43 @@ public class ControllerAbstractFactory {
 
     }
 
+    //funcion solamente para UI
+    public Boolean performActionMainUI(int unitType) {
+        boolean result=false;
+        switch (unitType) {
+            case 1:
+                if (countDicesPerUnit("DadoAtaque") >= 1) {
+                    result= useAttackUI(unitType);
+                } else {
+                    result=false;
+                    //System.out.println("No se puede realizar el ataque, insuficientes dados");
+                }
+                break;
+
+            case 2:
+                if (countDicesPerUnit("DadoAtaqueEspecial") >= 1) {
+                    result=useAttackUI(unitType);
+                } else {
+                    result=false;
+                    //System.out.println("No se puede realizar el ataque especial, insuficientes dados");
+                }
+                break;
+
+            case 3:
+                if (countDicesPerUnit("DadoMovimiento") >= 1) {
+                    result= useAttackUI(unitType);
+                } else {
+                    result=false;
+                   // System.out.println("No se puede realizar el movimiento, insuficientes dados");
+                }
+                break;
+
+            default:
+                break;
+
+        }
+        return result;
+    }
     /**Esta función define que tipo de acción se va a emplear, las acciones pueden ser ataque, ataque especial o moviemiento
      * Migue llama las funciones de el en esta parte**/
     public void useAttack(int unitType) {
@@ -602,7 +639,36 @@ public class ControllerAbstractFactory {
         }
 
     }
+    //Funcion solamente para UI
+    public Boolean useAttackUI(int unitType) {
+        boolean result=true;
+        switch (unitType) {
+            case 1:
+                //Funcionalidad de ataque va aqui
+                //System.out.println("Se ha efectuado el ataque");
+                result=true;
+                removeDicesUnit("DadoAtaque");
+                break;
 
+            case 2:
+                //Funcionalidad de ataque especial va aqui
+               // System.out.println("Se ha efectuado el ataque especial");
+                result=true;
+                removeDicesUnit("DadoAtaqueEspecial");
+                break;
+
+            case 3:
+                //Funcionalidad de movimiento va aqui
+                //System.out.println("Se ha movido la tropa");
+                result=true;
+                removeDicesUnit("DadoMovimiento");
+                break;
+
+            default:
+                break;
+        }
+        return result;
+    }
 
     /**Controla todo lo relacionado a los turnos de los jugadores**/
     public String getPlayer(){

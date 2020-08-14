@@ -115,7 +115,6 @@ public class Main {
             printer(cp.getInfoArmy());
             name = scan.next();
             unit = cp.searchUnit(name);
-
             printer(unit.getUnitInformation());
             c.performActionMain(option);
         }

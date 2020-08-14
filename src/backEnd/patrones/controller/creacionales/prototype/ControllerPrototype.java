@@ -228,6 +228,7 @@ public class ControllerPrototype {
                     msData[2]= String.valueOf(armyArray.get(i).getUnitAttack());
                     msData[3]= String.valueOf(armyArray.get(i).getUnitDefense());
                     msData[4]= String.valueOf(armyArray.get(i).getUnitHP());
+                    msData[5]=armyArray.get(i).getUnitInformationUI();
                 }
             }
         } else {
@@ -238,7 +239,7 @@ public class ControllerPrototype {
                     msData[2]= String.valueOf(armyArray2.get(i).getUnitAttack());
                     msData[3]= String.valueOf(armyArray2.get(i).getUnitDefense());
                     msData[4]= String.valueOf(armyArray2.get(i).getUnitHP());
-
+                    msData[5]=armyArray2.get(i).getUnitInformationUI();
                 }
             }
         }
