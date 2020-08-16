@@ -218,6 +218,76 @@ public class ControllerPrototype {
 
     }
     //funcion para buscar una tropa UI
+    public String[] serchInfoArmyUIJugador2(String name) {
+        String msData[]=new String[7];
+            for (String i : armyArray2.keySet()) {
+                if(armyArray2.get(i).getName().equals(name)){
+                    msData[0]=armyArray2.get(i).getName();
+                    msData[1]= String.valueOf(armyArray2.get(i).getCode());
+                    msData[2]= String.valueOf(armyArray2.get(i).getUnitAttack());
+                    msData[3]= String.valueOf(armyArray2.get(i).getUnitDefense());
+                    msData[4]= String.valueOf(armyArray2.get(i).getUnitHP());
+                    msData[5]=armyArray2.get(i).getUnitInformationUI();
+                }
+            }
+
+        return msData;
+    }
+
+    //funcion para buscar una tropa UI
+    public String[] serchInfoArmyUIJugador1(String name) {
+        String msData[]=new String[7];
+            for (String i : armyArray.keySet()) {
+                if(armyArray.get(i).getName().equals(name)){
+                    msData[0]=armyArray.get(i).getName();
+                    msData[1]= String.valueOf(armyArray.get(i).getCode());
+                    msData[2]= String.valueOf(armyArray.get(i).getUnitAttack());
+                    msData[3]= String.valueOf(armyArray.get(i).getUnitDefense());
+                    msData[4]= String.valueOf(armyArray.get(i).getUnitHP());
+                    msData[5]=armyArray.get(i).getUnitInformationUI();
+                }
+            }
+        return msData;
+    }
+
+    public boolean vidaTropaMenosJugador1(String name){
+        boolean result=false;
+        for (String i : armyArray.keySet()) {
+            if(armyArray.get(i).getName().equals(name)){
+                int num=armyArray.get(i).getUnitHP();
+                armyArray.get(i).setUnitHP(num-1);
+                if(armyArray2.get(i).getUnitHP()==0){
+                    result=true;
+                }
+            }
+        }
+        return result;
+    }
+
+
+    public boolean vidaTropaMenosJugador2(String name){
+        boolean result=false;
+        for (String i : armyArray2.keySet()) {
+            if(armyArray2.get(i).getName().equals(name)){
+                int num=armyArray2.get(i).getUnitHP();
+                armyArray2.get(i).setUnitHP(num-1);
+                if(armyArray2.get(i).getUnitHP()==0){
+                    result=true;
+                }
+            }
+        }
+        return result;
+    }
+
+    public void pruebaCambiarVida(String name){
+        for (String i : armyArray2.keySet()) {
+            if(armyArray2.get(i).getName().equals(name)){
+                armyArray2.get(i).setUnitDefense(1);
+            }
+        }
+    }
+
+    //funcion para buscar una tropa UI
     public String[] serchInfoArmyUI(String name) {
         String msData[]=new String[7];
         if(jugador){

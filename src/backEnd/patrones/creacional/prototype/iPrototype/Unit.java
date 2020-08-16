@@ -4,7 +4,6 @@ import backEnd.patrones.comportamiento.visitor.interfaces.IVisitor;
 
 public interface Unit {
     public int generateUnitCode();
-
     public String getUnitInformation();
     public String  getUnitInformationUI();
     public int getCode();

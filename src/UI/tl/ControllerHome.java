@@ -1,5 +1,6 @@
 package UI.tl;
 import UI.tl.Controller;
+import backEnd.patrones.comportamiento.observador.observadores.ContollerObservador;
 import backEnd.patrones.controller.comportamiento.visitor.ControllerVisitor;
 import backEnd.patrones.controller.creacionales.abstractFactory.ControllerAbstractFactory;
 import backEnd.patrones.controller.creacionales.prototype.ControllerPrototype;
@@ -35,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 public class ControllerHome implements Initializable {
 
     @FXML private AnchorPane pFiguras;
+    @FXML private AnchorPane panelVStropas;
+    @FXML private AnchorPane panelAtaques;
     @FXML private AnchorPane panelDado2;
     @FXML private AnchorPane panelInvocar2;
     @FXML private AnchorPane panelInvocarInfanteria;
@@ -74,25 +77,57 @@ public class ControllerHome implements Initializable {
     @FXML private Label setDerecha;
     @FXML private Label setIzquierda;
     @FXML private Label labelError;
+    @FXML private Label labelError2;
+    @FXML private Label labelAtaqueT1;
+    @FXML private Label labelAtaqueT2;
+    @FXML private Label labelAtaqueT3;
+    @FXML private Label setArribaAbajoAtaque;
+    @FXML private Label setDerechaAtaque;
+    @FXML private Label setIzquierdaAtaque;
+    @FXML private Label tipoAtaqueI;
+    @FXML private Label tipoAtaqueD;
+    @FXML private Label tipoAtaqueA;
+    @FXML private Label nombreAtaqueTropas1;
+    @FXML private Label nombreAtaqueTropas2;
+    @FXML private Label tipoAtaqueTropas2;
+    @FXML private Label tipoAtaqueTropas1;
+    @FXML private Label ataqueAtaqueTropas1;
+    @FXML private Label ataqueAtaqueTropas2;
+    @FXML private Label defensaAtaqueTropas1;
+    @FXML private Label defensaAtaqueTropas2;
+    @FXML private Label vidaAtaqueTropas1;
+    @FXML private Label vidaAtaqueTropas2;
+    @FXML private Label resultVS;
     @FXML private TextField arribaAbajoTxt;
     @FXML private TextField izquierdaTxt;
     @FXML private TextField derechaTxt;
     @FXML private Rectangle rectangulo;
     @FXML private Label labelCambioMovimiento;
+    @FXML private JFXButton btnAtaqueArriba;
+    @FXML private JFXButton btnAtaqueDerecha;
+    @FXML private JFXButton btnAtaqueIzquierda;
+    @FXML private Label labelAtaqueArriba;
+    @FXML private Label labelAtaqueDerecha;
+    @FXML private Label labelAtaqueIzquierda;
     private int jugador=1;
     private String color="red";
     private String idB;
+    private String idB2;
+    private String nombTropaEnemiga;
     String urlTropaCambiar;
+    String tipoTropa;
     String tropaCambiar;
     private int seconds=0;
     private int contSecond=0;
     private String urlTropa;
     RotateTransition rotate = new RotateTransition();
+    private ContollerObservador gestorObservador=new ContollerObservador();
     private ControllerVisitor gestorVisitor=new ControllerVisitor();
     private ControllerPrototype gestorPrototype=new ControllerPrototype();
     private ControllerAbstractFactory gestorAbstractFactory=new ControllerAbstractFactory();
     HashMap<String, String> Tropas= new HashMap<String, String>();
     HashMap<String, String> TropasURL= new HashMap<String, String>();
+    ArrayList<TropaJugador>tropaJugadors=new ArrayList<>();
     ArrayList<String>ids=new ArrayList<>();
     int px=0;
     int pj=0;
@@ -122,6 +157,7 @@ public class ControllerHome implements Initializable {
     }
 
     public void verificarFigura(String id){
+        System.out.println(id);
         idB=id;
         String[] arrOfStr = id.split(",", 2);
          p1= Integer.parseInt(arrOfStr[1]);
@@ -145,8 +181,11 @@ public class ControllerHome implements Initializable {
                  pFiguras.setVisible(true);
              }
          }else{
-             Tropas.put(tropaActual,id);
-             TropasURL.put(tropaActual,urlTropa);
+             if(jugador==1){
+
+             }
+             TropaJugador tropaJugador=new TropaJugador(jugador,tropaActual,urlTropa,idB,tipoTropa);
+             tropaJugadors.add(tropaJugador);
              tropaActual="N/A";
              tablerosP.setVisible(false);
              pFiguras.setVisible(true);
@@ -177,7 +216,8 @@ public class ControllerHome implements Initializable {
         panelInvocar2.setVisible(false);
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/3.png";
-        tropaActual="Aethelflaedj";
+        tropaActual="Aethelflaed";
+        tipoTropa="INFANTERIA";
         updateInfoCant();
     }
 
@@ -189,6 +229,7 @@ public class ControllerHome implements Initializable {
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/2.png";
         tropaActual="Kjartan";
+        tipoTropa="INFANTERIA";
         updateInfoCant();
     }
 
@@ -201,38 +242,46 @@ public class ControllerHome implements Initializable {
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/1.png";
         tropaActual="Finnan";
+        tipoTropa="INFANTERIA";
         updateInfoCant();
     }
 
     public void buscarHasMap(){
-        for (String i : Tropas.keySet()) {
-          //  System.out.println("key: " + i + " value: " + Tropas.get(i));
+       /* for (String i : Tropas.keySet()) {
+          System.out.println("key: " + i + " value: " + Tropas.get(i));
             ids.add(Tropas.get(i));
+        }*/
+        for (TropaJugador obj:tropaJugadors) {
+            ids.add(obj.getLocalidad1());
         }
     }
 
     public String buscarHasMap2(String id){
         String data="";
-        for (String i : Tropas.keySet()) {
+        for (TropaJugador obj:tropaJugadors){
+            if(obj.getLocalidad1().equals(id)){
+                data=obj.getNombreTropa();
+            }
+        }
+       /* for (String i : Tropas.keySet()) {
             //  System.out.println("key: " + i + " value: " + Tropas.get(i));
             if(Tropas.get(i).equals(id)){
                 data=  i;
             }
-        }
+        }*/
         return data;
     }
     public String buscarHasMap3(){
         String data="";
-        for (String i : TropasURL.keySet()) {
-            //  System.out.println("key: " + i + " value: " + Tropas.get(i));
-            if(i.equals(tropaCambiar)){
-                data=TropasURL.get(i);
+        for (TropaJugador obj:tropaJugadors){
+            if(obj.getNombreTropa().equals(tropaCambiar)){
+                data=obj.getUrlImg();
             }
         }
         return data;
     }
     public void BEOCCAJ(MouseEvent mouseEvent) {
-        String data=gestorAbstractFactory.summonUnitMainUI(1, "Beoccan");
+        String data=gestorAbstractFactory.summonUnitMainUI(1, "Beocca");
         panelInvocarInfanteria.setVisible(false);
         panelInvocar2.setVisible(false);
         panelResult2.setVisible(true);
@@ -240,6 +289,7 @@ public class ControllerHome implements Initializable {
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/4.png";
         tropaActual="Beocca";
+        tipoTropa="INFANTERIA";
         updateInfoCant();
     }
 
@@ -329,6 +379,22 @@ public class ControllerHome implements Initializable {
         movimiento.setText(String.valueOf(data2[2]));
     }
 
+    public void deleteTropa(){
+        String idNuevo= "90"+","+"10";
+        for (TropaJugador obj:tropaJugadors){
+            if(obj.getLocalidad1().equals(idB2)){
+                obj.setLocalidad1("90"+","+"10");
+            }
+        }
+        for (int i = 0; i <ids.size() ; i++) {
+            if(ids.get(i).equals(idB2)){
+                System.out.println("igual");
+                ids.remove(idB2);
+            }
+        }
+
+    }
+
     public void cambiarJugador(ActionEvent event) {
         gestorAbstractFactory.endTurn();
         gestorPrototype.endTurn();
@@ -343,6 +409,7 @@ public class ControllerHome implements Initializable {
             ataqueEspecial.setText(String.valueOf(data2[1]));
             movimiento.setText(String.valueOf(data2[2]));
             campoNombreJ.setText("Paola");
+            gestorVisitor.limpiarVisitadores();
         }else if(jugador==2){
             jugador=1;
             infanteria.setText(String.valueOf(data[0]));
@@ -352,6 +419,7 @@ public class ControllerHome implements Initializable {
             ataqueEspecial.setText(String.valueOf(data2[1]));
             movimiento.setText(String.valueOf(data2[2]));
             campoNombreJ.setText("Tracy");
+            gestorVisitor.limpiarVisitadores();
         }
     }
 
@@ -388,18 +456,18 @@ public class ControllerHome implements Initializable {
             if(jugador==1){
                 BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
                 Background background = new Background(backgroundImage);
-                Button button = (Button) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+                Pane button = (Pane) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
                 button.setBackground(background);
                 node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  red;");
                 node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  red;");
-               // node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
-                       // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  red;");
+               //node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
+                        //"    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  white;");
             }else{
                 BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
                 Background background = new Background(backgroundImage);
-                Button button = (Button) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+                Pane button = (Pane) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
                 button.setBackground(background);
                 node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
@@ -426,7 +494,6 @@ public class ControllerHome implements Initializable {
             Background background = new Background(backgroundImage);
             Pane button = (Pane) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
             button.setBackground(background);
-
             node3.getChildren().get(Integer.parseInt(arrOfStr[1])-2).setStyle("    -fx-pref-height: 70;\n" +
                     "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
             //node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
@@ -439,8 +506,13 @@ public class ControllerHome implements Initializable {
         }
         else{
             if(jugador==1){
-                node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
-                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane) node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1);
+                button.setBackground(background);
+
+                //node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
+                      //  "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:pink;");
                 node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
                 node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
@@ -448,8 +520,13 @@ public class ControllerHome implements Initializable {
                 node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  red;");
             }else{
-                node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
-                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane) node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1);
+                button.setBackground(background);
+
+                //node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
+                       // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
                 node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
                 node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
@@ -471,28 +548,40 @@ public class ControllerHome implements Initializable {
         pFiguras.setVisible(false);
         tablerosP.setVisible(true);
         if(p1==8){
+            BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+            Background background = new Background(backgroundImage);
+            Pane button = (Pane)node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1);
+            button.setBackground(background);
+
             node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
                     "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
-            node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+            //node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
+                    //"    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:green;");
             node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
                     "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
         }
         else{
             if(jugador==1){
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane)node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1);
+                button.setBackground(background);
 
-                node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
-                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                //node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
+                       // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
                 node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
                 node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
             }else{
-
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane)node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+                button.setBackground(background);
                 node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
-                node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
-                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
+                //node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
+                        //"    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
                 node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow ;");
             }
@@ -575,6 +664,7 @@ public class ControllerHome implements Initializable {
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/8.png";
         tropaActual="Guthrum";
+        tipoTropa="TANQUE";
         updateInfoCant();
     }
 
@@ -587,6 +677,7 @@ public class ControllerHome implements Initializable {
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/7.png";
         tropaActual="Haesten";
+        tipoTropa="TANQUE";
         updateInfoCant();
     }
 
@@ -599,6 +690,7 @@ public class ControllerHome implements Initializable {
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/6.png";
         tropaActual="Odda";
+        tipoTropa="TANQUE";
         updateInfoCant();
     }
 
@@ -611,6 +703,7 @@ public class ControllerHome implements Initializable {
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/5.png";
         tropaActual="Brida";
+        tipoTropa="TANQUE";
         updateInfoCant();
     }
 
@@ -631,6 +724,7 @@ public class ControllerHome implements Initializable {
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/10.png";
         tropaActual="Uhthred";
+        tipoTropa="ARTILLERIA";
         updateInfoCant();
     }
 
@@ -643,6 +737,7 @@ public class ControllerHome implements Initializable {
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/11.png";
         tropaActual="Osferth";
+        tipoTropa="ARTILLERIA";
         updateInfoCant();
     }
 
@@ -655,6 +750,7 @@ public class ControllerHome implements Initializable {
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/12.png";
         tropaActual="Iseult";
+        tipoTropa="ARTILLERIA";
         updateInfoCant();
     }
 
@@ -667,6 +763,7 @@ public class ControllerHome implements Initializable {
         resultInvocacion.setText(data);
         urlTropa="../img/DIBUJITOS/13.png";
         tropaActual="Leofirc";
+        tipoTropa="ARTILLERIA";
         updateInfoCant();
     }
 
@@ -693,9 +790,9 @@ public class ControllerHome implements Initializable {
                     cont1++;
                 }
             }
-        }else   {
-            for (int i = 0; i <Integer.parseInt(arrOfStr[0])+2 ; i++) {
-                if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-i).getStyle().contains("red")){
+        }else{
+            for (int i = 0; i <Integer.parseInt(arrOfStr[0])+1 ; i++) {
+                if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])+i).getStyle().contains("yellow")){
                     cont1++;
                 }
             }
@@ -703,14 +800,29 @@ public class ControllerHome implements Initializable {
         int cap2=8-Integer.parseInt(arrOfStr[0]);
         for (int i = 0; i <cap2-1 ; i++) {
             node5=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0])+(i+1));
-            if (node5.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                cont2++;
+            if(jugador==1){
+                if (node5.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
+                    cont2++;
+                }
+            }else{
+                if (node5.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
+                    cont2++;
+                }
             }
+
         }
         for (int i = 0; i <Integer.parseInt(arrOfStr[0]); i++) {
             node11=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0])-(i+1));
-            if (node11.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
-                cont3++;
+            if(jugador==1){
+
+                if (node11.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("red")){
+                    cont3++;
+                }
+            }else{
+
+                if (node11.getChildren().get(Integer.parseInt(arrOfStr[1])).getStyle().contains("yellow")){
+                    cont3++;
+                }
             }
         }
         setDerecha.setText(String.valueOf(cont2));
@@ -727,9 +839,18 @@ public class ControllerHome implements Initializable {
     }
 
     public void updateImg(String id){
-        ids.remove(idB);
-        Tropas.remove(tropaCambiar);
-        Tropas.put(tropaCambiar,id);
+        for (String tipo:ids) {
+            if(tipo.equals(idB)){
+                ids.remove(idB);
+                break;
+            }
+        }
+        ids.add(id);
+        for (TropaJugador obj:tropaJugadors){
+            if(obj.getNombreTropa().equals(tropaCambiar)){
+                obj.setLocalidad1(id);
+            }
+        }
     }
 
     public void moverAbajoArriba(ActionEvent event) {
@@ -737,29 +858,25 @@ public class ControllerHome implements Initializable {
             String[] arrOfStr = idB.split(",", 2);
             VBox node2=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0]));
             int max= Integer.parseInt(arribaAbajoTxt.getText());
-            BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(buscarHasMap3()).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-            Background background = new Background(backgroundImage);
-            Pane button = (Pane)node2.getChildren().get(Integer.parseInt(arrOfStr[1])-max);
-            button.setBackground(background);
-            updateImg(button.getId());
-            node2.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
-            //aqui es donde va la nueva imagen
-            //node2.getChildren().get(Integer.parseInt(arrOfStr[1])-max).setStyle("-fx-pref-height: 70;\n" +
-                    //"    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  green;");
-            updateInfoCant();
+
             if(jugador==1){
-                for (int i = 0; i <Integer.parseInt(arrOfStr[0])+1 ; i++) {
-                    if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-i).getStyle().contains("red")){
-
-                    }
-                }
-            }else   {
-                for (int i = 0; i <Integer.parseInt(arrOfStr[0])+2 ; i++) {
-                    if(node2.getChildren().get(Integer.parseInt(arrOfStr[1])-i).getStyle().contains("red")){
-
-                    }
-                }
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(buscarHasMap3()).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane)node2.getChildren().get(Integer.parseInt(arrOfStr[1])-max);
+                button.setBackground(background);
+                updateImg(button.getId());
+                node2.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
+                updateInfoCant();
+            }else{
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(buscarHasMap3()).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane)node2.getChildren().get(Integer.parseInt(arrOfStr[1])+max);
+                button.setBackground(background);
+                updateImg(button.getId());
+                node2.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  yellow;");
+                updateInfoCant();
             }
         }else {
             labelError.setVisible(true);
@@ -773,14 +890,312 @@ public class ControllerHome implements Initializable {
     }
 
     public void moverDerecha(ActionEvent event) {
+        if(gestorAbstractFactory.performActionMainUI(3)){
+            String[] arrOfStr = idB.split(",", 2);
+            int max= Integer.parseInt(derechaTxt.getText());
+            int max2=max-1;
+            VBox node5;
+            VBox node1=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0]));
+            VBox node6 =(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0])+(max2+1));
+            node5=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0]));
+            BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(buscarHasMap3()).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+            Background background = new Background(backgroundImage);
+            Pane button = (Pane)node6.getChildren().get(Integer.parseInt(arrOfStr[1]));
+            button.setBackground(background);
+            updateImg(button.getId());
+            updateInfoCant();
+            if(jugador==1){
+                node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
+            }else{
+                node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  yellow;");
+            }
+
+        }
+
     }
 
     public void moverIzquierda(ActionEvent event) {
+        if(gestorAbstractFactory.performActionMainUI(3)){
+            String[] arrOfStr = idB.split(",", 2);
+            int max= Integer.parseInt(izquierdaTxt.getText());
+            int max2=max-1;
+            VBox node6 =(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0])+(max2-1));
+            BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(buscarHasMap3()).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+            Background background = new Background(backgroundImage);
+            Pane button = (Pane)node6.getChildren().get(Integer.parseInt(arrOfStr[1]));
+            button.setBackground(background);
+            updateImg(button.getId());
+            updateInfoCant();
+
+
+            String idProv=button.getId();
+            String[] arrOfStr2 = idProv.split(",", 2);
+            VBox node1 =(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr2[0])+1);
+            Pane button2 = (Pane)node1.getChildren().get(Integer.parseInt(arrOfStr2[1]));
+
+            if(jugador==1){
+                button2.setStyle("-fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
+            }else{
+                button2.setStyle("-fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  yellow;");
+            }
+
+        }
     }
 
     public void aumentarAtaque(ActionEvent event) {
         gestorVisitor.aumentarAtaque(tropaActual);
-        gestorVisitor.limpiarVisitadores();
         updateInfoCant();
+    }
+
+    public void cerrarAtaque(MouseEvent mouseEvent) {
+        panelAtaques.setVisible(false);
+        tablerosP.setVisible(true);
+    }
+
+    public void validarAtaques(ActionEvent event){
+        System.out.println(idB);
+        int cont1 = 0,cont2 = 0,cont3 = 0;
+        String[] arrOfStr = idB.split(",", 2);
+        String data[]=new String[2];
+        String derecha=arrOfStr[0];
+        int num= Integer.parseInt(derecha);
+        String valiId;
+        int numTipo= Integer.parseInt(arrOfStr[0]);
+        String tipo=(numTipo+1)+","+arrOfStr[1];
+
+        //derecha
+        if(/*ids.contains((arrOfStr[0]+1)+","+arrOfStr[1])*/ ids.contains(tipo)){
+            valiId=(numTipo+1)+","+arrOfStr[1];
+            cont1++;
+            data=buscarTipoNombre(valiId);
+            labelAtaqueT2.setText(data[0]);
+
+        //izquierda
+        }else if(ids.contains((num-1)+","+arrOfStr[1])){
+            cont2++;
+            valiId=(num-1)+","+arrOfStr[1];
+            data=buscarTipoNombre(valiId);
+            labelAtaqueT3.setText(data[0]);
+        }
+        //jugador1
+        if(jugador==1){
+            String arriba=arrOfStr[1];
+            int num2= Integer.parseInt(arriba);
+            if(ids.contains(arrOfStr[0]+","+(num2-1))){
+                valiId=(arrOfStr[0])+","+(num2-1);
+                cont3++;
+                data=buscarTipoNombre(valiId);
+                labelAtaqueT1.setText(data[0]);
+            }
+        }else {
+            String arriba=arrOfStr[1];
+            int num2= Integer.parseInt(arriba);
+            if(ids.contains(arrOfStr[0]+","+(num2+1))){
+                cont3++;
+            }
+        }
+        setArribaAbajoAtaque.setText(String.valueOf(cont3));
+        setDerechaAtaque.setText(String.valueOf(cont1));
+        setIzquierdaAtaque.setText(String.valueOf(cont2));
+        panelInfoTropas.setVisible(false);
+        panelAtaques.setVisible(true);
+    }
+
+    public String[] buscarTipoNombre(String id){
+        String data[]=new String[2];
+        for (TropaJugador obj:tropaJugadors) {
+            if(obj.getLocalidad1().equals(id)){
+                data[0]=obj.getNombreTropa();
+                data[1]=obj.getLocalidad2();
+                idB2=obj.getLocalidad1();
+                nombTropaEnemiga=obj.getNombreTropa();
+            }
+        }
+        return data;
+    }
+
+    public void atacarAbajoArriba(ActionEvent event) {
+        gestorPrototype.pruebaCambiarVida(nombTropaEnemiga);
+        if(gestorAbstractFactory.performActionMainUI(1)){
+            String data[]=gestorPrototype.serchInfoArmyUIJugador1(buscarHasMap2(idB));
+            for (int i = 0; i <data.length ; i++) {
+                nombreAtaqueTropas1.setText(data[0]);
+                tipoAtaqueTropas1.setText(data[3]);
+                ataqueAtaqueTropas1.setText(data[2]);
+                defensaAtaqueTropas1.setText(data[5]);
+                vidaAtaqueTropas1.setText(data[4]);
+            }
+            String data2[]=gestorPrototype.serchInfoArmyUIJugador2(nombTropaEnemiga);
+            for (int i = 0; i <data2.length ; i++) {
+                nombreAtaqueTropas2.setText(data2[0]);
+                tipoAtaqueTropas2.setText(data2[3]);
+                ataqueAtaqueTropas2.setText(data2[2]);
+                defensaAtaqueTropas2.setText(data2[5]);
+                vidaAtaqueTropas2.setText(data2[4]);
+            }
+            int ataqueMy= Integer.parseInt(ataqueAtaqueTropas1.getText());
+            int defensaEnemiga= Integer.parseInt(tipoAtaqueTropas2.getText());
+            if(ataqueMy<defensaEnemiga){
+                resultVS.setText("EL ATAQUE ES MENOR A LA DENFENSA NI COSQUILLAS LE HIZO");
+            }else if(ataqueMy==defensaEnemiga){
+                resultVS.setText("TROPAS DE IGUAL NIVEL");
+            }
+            else {
+                if(jugador==1){
+                    if (gestorPrototype.vidaTropaMenosJugador2(nombreAtaqueTropas2.getText())){
+                        String[] arrOfStr = idB.split(",", 2);
+                        VBox node2=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0]));
+                        node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("-fx-pref-height: 70;\n" +
+                                "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  yellow;");
+                        deleteTropa();
+                    }
+
+                }else{
+                    if (gestorPrototype.vidaTropaMenosJugador1(nombreAtaqueTropas1.getText())){
+                        String[] arrOfStr = idB.split(",", 2);
+                        VBox node2=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0]));
+                        node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("-fx-pref-height: 70;\n" +
+                                "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
+                        deleteTropa();
+                    }
+                }
+                resultVS.setText("TROPA AFECTADA VIDA--");
+            }
+        }else{
+            resultVS.setText("NO TIENES LOS DADOS SUFUCIENTES");
+        }
+
+        resultVS.setVisible(false);
+        panelVStropas.setVisible(true);
+    }
+
+    public void revelarGanador(ActionEvent event) {
+        resultVS.setVisible(true);
+    }
+
+    public void cerrarResultVS(MouseEvent mouseEvent) {
+        resultVS.setVisible(false);
+        panelVStropas.setVisible(false);
+        panelAtaques.setVisible(false);
+        tablerosP.setVisible(true);
+    }
+
+    public void atacarDerecha(ActionEvent event) {
+        gestorPrototype.pruebaCambiarVida(nombTropaEnemiga);
+        if(gestorAbstractFactory.performActionMainUI(1)){
+            String data[]=gestorPrototype.serchInfoArmyUIJugador1(buscarHasMap2(idB));
+            for (int i = 0; i <data.length ; i++) {
+                nombreAtaqueTropas1.setText(data[0]);
+                tipoAtaqueTropas1.setText(data[3]);
+                ataqueAtaqueTropas1.setText(data[2]);
+                defensaAtaqueTropas1.setText(data[5]);
+                vidaAtaqueTropas1.setText(data[4]);
+            }
+            String data2[]=gestorPrototype.serchInfoArmyUIJugador2(nombTropaEnemiga);
+            for (int i = 0; i <data2.length ; i++) {
+                nombreAtaqueTropas2.setText(data2[0]);
+                tipoAtaqueTropas2.setText(data2[3]);
+                ataqueAtaqueTropas2.setText(data2[2]);
+                defensaAtaqueTropas2.setText(data2[5]);
+                vidaAtaqueTropas2.setText(data2[4]);
+            }
+            int ataqueMy= Integer.parseInt(ataqueAtaqueTropas1.getText());
+            int defensaEnemiga= Integer.parseInt(tipoAtaqueTropas2.getText());
+            if(ataqueMy<defensaEnemiga){
+                resultVS.setText("EL ATAQUE ES MENOR A LA DENFENSA NI COSQUILLAS LE HIZO");
+            }else if(ataqueMy==defensaEnemiga){
+                resultVS.setText("TROPAS DE IGUAL NIVEL");
+            }else{
+                if(jugador==1){
+                    if (gestorPrototype.vidaTropaMenosJugador2(nombreAtaqueTropas2.getText())){
+                        String[] arrOfStr = idB.split(",", 2);
+                        VBox node2=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0])+1);
+                        node2.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
+                                "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  yellow;");
+                        deleteTropa();
+                    }
+
+                }else{
+                    if (gestorPrototype.vidaTropaMenosJugador1(nombreAtaqueTropas1.getText())){
+                        String[] arrOfStr = idB.split(",", 2);
+                        VBox node2=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0])+1);
+                        node2.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
+                                "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
+                        deleteTropa();
+                    }
+                } resultVS.setText("TROPA AFECTADA VIDA--");
+            }
+        }else{
+            resultVS.setText("NO TIENES LOS DADOS SUFUCIENTES");
+        }
+
+        resultVS.setVisible(false);
+        panelVStropas.setVisible(true);
+    }
+
+    public void atacarIzquierda(ActionEvent event) {
+        gestorPrototype.pruebaCambiarVida(nombTropaEnemiga);
+        if(gestorAbstractFactory.performActionMainUI(1)){
+            String data[]=gestorPrototype.serchInfoArmyUIJugador1(buscarHasMap2(idB));
+            for (int i = 0; i <data.length ; i++) {
+                nombreAtaqueTropas1.setText(data[0]);
+                tipoAtaqueTropas1.setText(data[3]);
+                ataqueAtaqueTropas1.setText(data[2]);
+                defensaAtaqueTropas1.setText(data[5]);
+                vidaAtaqueTropas1.setText(data[4]);
+            }
+            String data2[]=gestorPrototype.serchInfoArmyUIJugador2(nombTropaEnemiga);
+            for (int i = 0; i <data2.length ; i++) {
+                nombreAtaqueTropas2.setText(data2[0]);
+                tipoAtaqueTropas2.setText(data2[3]);
+                ataqueAtaqueTropas2.setText(data2[2]);
+                defensaAtaqueTropas2.setText(data2[5]);
+                vidaAtaqueTropas2.setText(data2[4]);
+            }
+            int ataqueMy= Integer.parseInt(ataqueAtaqueTropas1.getText());
+            int defensaEnemiga= Integer.parseInt(tipoAtaqueTropas2.getText());
+            if(ataqueMy<defensaEnemiga){
+                resultVS.setText("EL ATAQUE ES MENOR A LA DENFENSA NI COSQUILLAS LE HIZO");
+            }else if(ataqueMy==defensaEnemiga){
+                resultVS.setText("TROPAS DE IGUAL NIVEL");
+            }else{
+                if(jugador==1){
+                    if (gestorPrototype.vidaTropaMenosJugador2(nombreAtaqueTropas2.getText())){
+                        String[] arrOfStr = idB.split(",", 2);
+                        VBox node1 =(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0])-1);
+                        Pane button2 = (Pane)node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+                        button2.setStyle("-fx-pref-height: 70;\n" +
+                                "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  yellow;");
+                        deleteTropa();
+                    }
+
+                }else{
+                    if (gestorPrototype.vidaTropaMenosJugador1(nombreAtaqueTropas1.getText())){
+                        String[] arrOfStr = idB.split(",", 2);
+                        VBox node2=(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0]));
+                        node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("-fx-pref-height: 70;\n" +
+                                "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
+                        deleteTropa();
+                    }
+                }
+                resultVS.setText("TROPA AFECTADA VIDA--");
+            }
+        }else{
+            resultVS.setText("NO TIENES LOS DADOS SUFUCIENTES");
+        }
+
+        resultVS.setVisible(false);
+        panelVStropas.setVisible(true);
+    }
+
+    public void ataqueEspecial(ActionEvent event) {
+    }
+
+    public void probarVida(ActionEvent event) {
+        System.out.println(gestorObservador.actualizarCastle1());
     }
 }
