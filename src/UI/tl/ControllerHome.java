@@ -1,4 +1,5 @@
 package UI.tl;
+import UI.principal.ToScene;
 import UI.tl.Controller;
 import backEnd.patrones.comportamiento.observador.observadores.ContollerObservador;
 import backEnd.patrones.controller.comportamiento.visitor.ControllerVisitor;
@@ -35,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ControllerHome implements Initializable {
 
+    @FXML private  AnchorPane finJuego;
     @FXML private AnchorPane pFiguras;
     @FXML private AnchorPane panelVStropas;
     @FXML private AnchorPane panelAtaques;
@@ -98,6 +100,8 @@ public class ControllerHome implements Initializable {
     @FXML private Label vidaAtaqueTropas1;
     @FXML private Label vidaAtaqueTropas2;
     @FXML private Label resultVS;
+    @FXML private Label vidaTorre1;
+    @FXML private Label vidaTorre2;
     @FXML private TextField arribaAbajoTxt;
     @FXML private TextField izquierdaTxt;
     @FXML private TextField derechaTxt;
@@ -161,6 +165,7 @@ public class ControllerHome implements Initializable {
         idB=id;
         String[] arrOfStr = id.split(",", 2);
          p1= Integer.parseInt(arrOfStr[1]);
+         pj=Integer.parseInt(arrOfStr[0]);
          if(tropaActual.equals("N/A")){
              buscarHasMap();
              if(ids.contains(id)){
@@ -437,20 +442,51 @@ public class ControllerHome implements Initializable {
             Background background = new Background(backgroundImage);
             Pane button = (Pane) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
             button.setBackground(background);
-            node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
-                   "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
+            if(jugador==1){
+                node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
 
-            node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  red;");
-            //node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
-                 //   "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
+                node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  red;");
+                //node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
+                //   "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
+            }else{
+                node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  yellow;");
+
+                node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  yellow;");
+                //node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("-fx-pref-height: 70;\n" +
+                //   "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:  red;");
+            }
+
         }else if(p1==0){
-            node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  yellow;");
-            node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  yellow;");
-            node4.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  yellow;");
+            if(jugador==1){
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+                button.setBackground(background);
+
+                // node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
+                // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  yellow;");
+                node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  red;");
+                node4.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  red;");
+            }else{
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+                button.setBackground(background);
+
+                // node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
+                // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  yellow;");
+                node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  yellow;");
+                node4.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  yellow;");
+            }
+
         }
         else{
             if(jugador==1){
@@ -477,6 +513,7 @@ public class ControllerHome implements Initializable {
                     //    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  yellow;");
             }
         }
+        verificarVidas();
     }
 
     public void pFigura2MO(MouseEvent mouseEvent) {
@@ -489,30 +526,45 @@ public class ControllerHome implements Initializable {
         pFiguras.setVisible(false);
         tablerosP.setVisible(true);
         if(p1==8){
+            if(jugador==1){
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+                button.setBackground(background);
+                node3.getChildren().get(Integer.parseInt(arrOfStr[1])-2).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                //node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
+                // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+            }else{
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+                button.setBackground(background);
+                node3.getChildren().get(Integer.parseInt(arrOfStr[1])-2).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
+                //node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
+                // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
+                node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
+            }
 
-            BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-            Background background = new Background(backgroundImage);
-            Pane button = (Pane) node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
-            button.setBackground(background);
-            node3.getChildren().get(Integer.parseInt(arrOfStr[1])-2).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
-            //node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
-                   // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
-            node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
-            node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
 
         }
         else{
             if(jugador==1){
                 BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
                 Background background = new Background(backgroundImage);
-                Pane button = (Pane) node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1);
-                button.setBackground(background);
+                Pane button2 = (Pane) node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1);
+                button2.setBackground(background);
 
                 //node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
-                      //  "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:pink;");
+                //  "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:pink;");
                 node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
                 node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
@@ -522,11 +574,11 @@ public class ControllerHome implements Initializable {
             }else{
                 BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
                 Background background = new Background(backgroundImage);
-                Pane button = (Pane) node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1);
-                button.setBackground(background);
+                Pane button3 = (Pane) node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1);
+                button3.setBackground(background);
 
                 //node3.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
-                       // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
+                // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
                 node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
                 node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
@@ -535,7 +587,7 @@ public class ControllerHome implements Initializable {
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:  yellow;");
             }
         }
-
+        verificarVidas();
     }
 
     public void pFigura3MO(MouseEvent mouseEvent) {
@@ -548,31 +600,44 @@ public class ControllerHome implements Initializable {
         pFiguras.setVisible(false);
         tablerosP.setVisible(true);
         if(p1==8){
-            BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-            Background background = new Background(backgroundImage);
-            Pane button = (Pane)node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1);
-            button.setBackground(background);
+            if(jugador==1){
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane)node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+                button.setBackground(background);
+               // node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
+                       // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
+                "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+            }else{
+                BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                Background background = new Background(backgroundImage);
+                Pane button = (Pane)node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1);
+                button.setBackground(background);
 
-            node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
-            //node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
-                    //"    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:green;");
-            node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
-                    "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
+                //node2.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
+                //"    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:green;");
+                node4.getChildren().get(Integer.parseInt(arrOfStr[1])-1).setStyle("    -fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
+            }
+
         }
         else{
             if(jugador==1){
                 BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
                 Background background = new Background(backgroundImage);
-                Pane button = (Pane)node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1);
+                Pane button = (Pane)node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
                 button.setBackground(background);
-
-                //node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
-                       // "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
-                node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
+                node2.getChildren().get(Integer.parseInt(arrOfStr[1])+1).setStyle("    -fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                //node1.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
+                //"    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow;");
                 node.getChildren().get(Integer.parseInt(arrOfStr[1])).setStyle("    -fx-pref-height: 70;\n" +
-                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red;");
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:red ;");
             }else{
                 BackgroundImage backgroundImage = new BackgroundImage( new Image( getClass().getResource(urlTropa).toExternalForm()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
                 Background background = new Background(backgroundImage);
@@ -586,7 +651,7 @@ public class ControllerHome implements Initializable {
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52; -fx-background-color:yellow ;");
             }
         }
-
+        verificarVidas();
     }
 
     public void cerrarResultados(MouseEvent mouseEvent) {
@@ -881,7 +946,7 @@ public class ControllerHome implements Initializable {
         }else {
             labelError.setVisible(true);
         }
-
+        verificarVidas();
     }
 
     public void cerrarMovimiento(MouseEvent mouseEvent) {
@@ -913,7 +978,7 @@ public class ControllerHome implements Initializable {
             }
 
         }
-
+        verificarVidas();
     }
 
     public void moverIzquierda(ActionEvent event) {
@@ -944,6 +1009,7 @@ public class ControllerHome implements Initializable {
             }
 
         }
+        verificarVidas();
     }
 
     public void aumentarAtaque(ActionEvent event) {
@@ -1068,7 +1134,7 @@ public class ControllerHome implements Initializable {
         }else{
             resultVS.setText("NO TIENES LOS DADOS SUFUCIENTES");
         }
-
+        verificarVidas();
         resultVS.setVisible(false);
         panelVStropas.setVisible(true);
     }
@@ -1132,7 +1198,7 @@ public class ControllerHome implements Initializable {
         }else{
             resultVS.setText("NO TIENES LOS DADOS SUFUCIENTES");
         }
-
+        verificarVidas();
         resultVS.setVisible(false);
         panelVStropas.setVisible(true);
     }
@@ -1187,7 +1253,7 @@ public class ControllerHome implements Initializable {
         }else{
             resultVS.setText("NO TIENES LOS DADOS SUFUCIENTES");
         }
-
+        verificarVidas();
         resultVS.setVisible(false);
         panelVStropas.setVisible(true);
     }
@@ -1195,7 +1261,51 @@ public class ControllerHome implements Initializable {
     public void ataqueEspecial(ActionEvent event) {
     }
 
-    public void probarVida(ActionEvent event) {
-        System.out.println(gestorObservador.actualizarCastle1());
+    public void verificarVidas() {
+        int cont1=0;
+        int cont2=0;
+        String idSplit;
+        for (TropaJugador obj:tropaJugadors){
+            idSplit=obj.getLocalidad1();
+            String[] arrOfStr = idSplit.split(",", 2);
+            if(obj.getJugador()==1 && arrOfStr[1].equals("0")){
+                cont1++;
+                VBox node1 =(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0]));
+                Pane button2 = (Pane)node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+                button2.setStyle("-fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:red;");
+                deleteTropa();
+                int cantVida= Integer.parseInt(vidaTorre2.getText());
+                vidaTorre2.setText(String.valueOf(cantVida-1));
+                if(gestorObservador.actualizarCastle1()){
+                    tablerosP.setVisible(false);
+                    finJuego.setVisible(true);
+                    System.out.println("Termino el juego");
+                }
+            }
+            if(obj.getJugador()==2 && arrOfStr[1].equals("8")){
+                cont2++;
+                VBox node1 =(VBox)tablerosP.getChildren().get(Integer.parseInt(arrOfStr[0]));
+                Pane button2 = (Pane)node1.getChildren().get(Integer.parseInt(arrOfStr[1]));
+                button2.setStyle("-fx-pref-height: 70;\n" +
+                        "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:yellow;");
+                deleteTropa();
+                int cantVida= Integer.parseInt(vidaTorre1.getText());
+                vidaTorre1.setText(String.valueOf(cantVida-1));
+                if(gestorObservador.actualizarCastle2()){
+                    tablerosP.setVisible(false);
+                    finJuego.setVisible(true);
+                    System.out.println("Termino el juego");
+                }
+            }
+
+        }
+      //  System.out.println("Llegaron arriba "+cont1);
+       // System.out.println("Llegaron abajo "+cont2);
+       // System.out.println(gestorObservador.actualizarCastle1());
+    }
+
+    public void cerrarJuego(MouseEvent mouseEvent) {
+        new ToScene().toScene("../sample/sample.fxml", mouseEvent);
     }
 }

@@ -1023,6 +1023,51 @@
             <DropShadow color="#2b3d52" height="53.62" radius="25.5675" spread="0.23" width="50.65" />
          </effect>
       </AnchorPane>
-      <Button layoutX="275.0" layoutY="19.0" mnemonicParsing="false" onAction="#probarVida" text="Button" />
+      <Label layoutX="726.0" layoutY="23.0" text="VIDA" textFill="#cccccc">
+         <font>
+            <Font name="Roboto Black" size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label layoutX="723.0" layoutY="571.0" text="VIDA" textFill="#cccccc">
+         <font>
+            <Font name="Roboto Black" size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label fx:id="vidaTorre1" layoutX="771.0" layoutY="22.0" prefHeight="18.0" prefWidth="11.0" text="3" textFill="WHITE">
+         <font>
+            <Font name="Roboto Medium" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="vidaTorre2" layoutX="767.0" layoutY="569.0" prefHeight="18.0" prefWidth="11.0" text="3" textFill="WHITE">
+         <font>
+            <Font name="Roboto Medium" size="14.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="finJuego" layoutX="397.0" layoutY="212.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2b3d52;" visible="false">
+         <effect>
+            <DropShadow color="#2b3d52" height="44.72" radius="21.119999999999997" spread="0.24" width="41.76" />
+         </effect>
+         <children>
+            <Label fx:id="campoNombreJ5" layoutX="13.0" layoutY="80.0" text="¡ El juego a terminado !" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="infanteria3" layoutX="9.0" layoutY="5.0" onMouseClicked="#cerrarJuego" prefHeight="18.0" prefWidth="11.0" text="X" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
