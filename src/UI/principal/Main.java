@@ -15,7 +15,7 @@ import javafx.util.Duration;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
-       Parent root = FXMLLoader.load(getClass().getResource("../sample/home.fxml"));
+       Parent root = FXMLLoader.load(getClass().getResource("../sample/sample.fxml"));
         primaryStage.setTitle("CENFO-TECOS");
         primaryStage.setScene(new Scene(root, 782, 603));
         primaryStage.show();

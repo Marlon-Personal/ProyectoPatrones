@@ -18,6 +18,7 @@ public class Main {
         int option = 0;
         c.startPlayer1();
         cp.startPlayer1();
+        cV.startPlayer1();
         do {
             option = showMainMenu();
             processFunction(option);
@@ -62,6 +63,7 @@ public class Main {
             case 6:
                 c.endTurn();
                 cp.endTurn();
+                cV.endTurn();
                 break;
             case 7:
                 printer("Gracias por usar el sistema");

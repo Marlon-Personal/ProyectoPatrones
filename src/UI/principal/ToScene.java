@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class ToScene {
     public void toScene(String path, Event event) {
+        //FXMLLoader myLoader = new FXMLLoader(getClass().getResource("../sample/"+path));
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("../sample/"+path));
         try {

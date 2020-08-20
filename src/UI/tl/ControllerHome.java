@@ -25,6 +25,7 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import main.Main;
 
 import java.io.File;
 import java.net.URL;
@@ -125,6 +126,7 @@ public class ControllerHome implements Initializable {
     private int contSecond=0;
     private String urlTropa;
     RotateTransition rotate = new RotateTransition();
+    private ControllerVisitor getGestorVisitor=new ControllerVisitor();
     private ContollerObservador gestorObservador=new ContollerObservador();
     private ControllerVisitor gestorVisitor=new ControllerVisitor();
     private ControllerPrototype gestorPrototype=new ControllerPrototype();
@@ -141,6 +143,7 @@ public class ControllerHome implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         gestorAbstractFactory.startPlayer1();
         gestorPrototype.startPlayer1();
+        getGestorVisitor.startPlayer1();
         tablerosP.getChildren().clear();
         for (int i = 0; i <8 ; i++) {
             px++;
@@ -161,7 +164,7 @@ public class ControllerHome implements Initializable {
     }
 
     public void verificarFigura(String id){
-        System.out.println(id);
+
         idB=id;
         String[] arrOfStr = id.split(",", 2);
          p1= Integer.parseInt(arrOfStr[1]);
@@ -268,12 +271,6 @@ public class ControllerHome implements Initializable {
                 data=obj.getNombreTropa();
             }
         }
-       /* for (String i : Tropas.keySet()) {
-            //  System.out.println("key: " + i + " value: " + Tropas.get(i));
-            if(Tropas.get(i).equals(id)){
-                data=  i;
-            }
-        }*/
         return data;
     }
     public String buscarHasMap3(){
@@ -393,7 +390,7 @@ public class ControllerHome implements Initializable {
         }
         for (int i = 0; i <ids.size() ; i++) {
             if(ids.get(i).equals(idB2)){
-                System.out.println("igual");
+
                 ids.remove(idB2);
             }
         }
@@ -403,6 +400,7 @@ public class ControllerHome implements Initializable {
     public void cambiarJugador(ActionEvent event) {
         gestorAbstractFactory.endTurn();
         gestorPrototype.endTurn();
+        gestorVisitor.endTurn();
         int data[]=gestorAbstractFactory.countInvocationDicesTestUI();
         int data2[]=gestorAbstractFactory.countAttackDicesUI();
         if(jugador==1){
@@ -664,8 +662,6 @@ public class ControllerHome implements Initializable {
         String data1=invocacionDada1();
         String data2=invocacionDada2();
         String data3=invocacionDada3();
-        System.out.println(data1);
-        System.out.println(data2);
         rotate.pause();
         panelDado2.setVisible(false);
         mostrarResultados(data1,data2,data3);
@@ -1013,7 +1009,7 @@ public class ControllerHome implements Initializable {
     }
 
     public void aumentarAtaque(ActionEvent event) {
-        gestorVisitor.aumentarAtaque(tropaActual);
+        gestorVisitor.aumentarAtaqueUI(buscarHasMap2(idB),jugador);
         updateInfoCant();
     }
 
@@ -1023,7 +1019,6 @@ public class ControllerHome implements Initializable {
     }
 
     public void validarAtaques(ActionEvent event){
-        System.out.println(idB);
         int cont1 = 0,cont2 = 0,cont3 = 0;
         String[] arrOfStr = idB.split(",", 2);
         String data[]=new String[2];
@@ -1264,6 +1259,9 @@ public class ControllerHome implements Initializable {
     public void verificarVidas() {
         int cont1=0;
         int cont2=0;
+        int cantVida=0;
+        int vida1=3;
+        int vida2=3;
         String idSplit;
         for (TropaJugador obj:tropaJugadors){
             idSplit=obj.getLocalidad1();
@@ -1275,12 +1273,11 @@ public class ControllerHome implements Initializable {
                 button2.setStyle("-fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:red;");
                 deleteTropa();
-                int cantVida= Integer.parseInt(vidaTorre2.getText());
-                vidaTorre2.setText(String.valueOf(cantVida-1));
+                cantVida= Integer.parseInt(vidaTorre1.getText());
+                vidaTorre1.setText(String.valueOf(cantVida-1));
                 if(gestorObservador.actualizarCastle1()){
                     tablerosP.setVisible(false);
                     finJuego.setVisible(true);
-                    System.out.println("Termino el juego");
                 }
             }
             if(obj.getJugador()==2 && arrOfStr[1].equals("8")){
@@ -1290,12 +1287,11 @@ public class ControllerHome implements Initializable {
                 button2.setStyle("-fx-pref-height: 70;\n" +
                         "    -fx-pref-width: 70; -fx-border-color: #2b3d52;-fx-background-color:yellow;");
                 deleteTropa();
-                int cantVida= Integer.parseInt(vidaTorre1.getText());
-                vidaTorre1.setText(String.valueOf(cantVida-1));
+                 cantVida= Integer.parseInt(vidaTorre1.getText());
+                vidaTorre2.setText(String.valueOf(cantVida-1));
                 if(gestorObservador.actualizarCastle2()){
                     tablerosP.setVisible(false);
                     finJuego.setVisible(true);
-                    System.out.println("Termino el juego");
                 }
             }
 
@@ -1307,5 +1303,15 @@ public class ControllerHome implements Initializable {
 
     public void cerrarJuego(MouseEvent mouseEvent) {
         new ToScene().toScene("../sample/sample.fxml", mouseEvent);
+    }
+
+    public void ataqueEspecialVida(ActionEvent event) {
+        gestorVisitor.aumentarVida(buscarHasMap2(idB),jugador);
+        updateInfoCant();
+    }
+
+    public void ataqueEspecialDefensa(ActionEvent event) {
+        gestorVisitor.aumentarDefensa(buscarHasMap2(idB),jugador);
+        updateInfoCant();
     }
 }

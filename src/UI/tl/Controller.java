@@ -52,8 +52,6 @@ public class Controller implements Initializable {
     }
 
     public void login(ActionEvent event) {
-        jugadorN1=nombreJ1.getText();
-        jugadorN2=nombreJ2.getText();
         new ToScene().toScene("../sample/home.fxml", event);
     }
 }
