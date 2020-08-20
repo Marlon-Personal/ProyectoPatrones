@@ -548,7 +548,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="panelInfoTropas" layoutX="275.0" layoutY="171.0" prefHeight="266.0" prefWidth="437.0" style="-fx-background-color: #2b3d52;" visible="false">
+      <AnchorPane fx:id="panelInfoTropas" layoutX="275.0" layoutY="171.0" prefHeight="306.0" prefWidth="446.0" style="-fx-background-color: #2b3d52;" visible="false">
          <effect>
             <DropShadow color="#0d141b" height="47.69" radius="24.085" spread="0.15" width="50.65" />
          </effect>
@@ -601,7 +601,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Label>
-            <Label layoutX="307.0" layoutY="116.0" text="MOVIMIENTO:" textFill="#cccccc">
+            <Label layoutX="307.0" layoutY="116.0" text="VIDA TROPA:" textFill="#cccccc">
                <font>
                   <Font name="Roboto Black" size="13.0" />
                </font>
@@ -640,15 +640,16 @@
                </font>
             </Label>
             <Line endX="307.5" layoutX="120.0" layoutY="177.0" startX="-110.5" stroke="#9a9898" />
-            <Button layoutX="9.0" layoutY="205.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" style="-fx-background-color: #d7d5d5;" text="ATAQUE" />
-            <Button layoutX="116.0" layoutY="205.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="99.0" style="-fx-background-color: #d7d5d5;" text="ATQUE EP" />
+            <Button layoutX="9.0" layoutY="205.0" mnemonicParsing="false" onAction="#validarAtaques" prefHeight="32.0" prefWidth="99.0" style="-fx-background-color: #d7d5d5;" text="ATAQUE" />
+            <Button layoutX="116.0" layoutY="205.0" mnemonicParsing="false" onAction="#ataqueEspecialVida" prefHeight="32.0" prefWidth="99.0" style="-fx-background-color: #d7d5d5;" text="++ VIDA" />
             <Button layoutX="223.0" layoutY="205.0" mnemonicParsing="false" onAction="#validarMovimientos" prefHeight="32.0" prefWidth="99.0" style="-fx-background-color: #d7d5d5;" text="MOVIMIENTO" />
-            <Button layoutX="330.0" layoutY="205.0" mnemonicParsing="false" onAction="#aumentarAtaque" prefHeight="32.0" prefWidth="99.0" style="-fx-background-color: #d7d5d5;" text="+ATAQUE" />
+            <Button layoutX="330.0" layoutY="205.0" mnemonicParsing="false" onAction="#aumentarAtaque" prefHeight="32.0" prefWidth="99.0" style="-fx-background-color: #d7d5d5;" text="++ ATAQUE" />
             <Label fx:id="infanteria2231" layoutX="7.0" layoutY="6.0" onMouseClicked="#cerrarInfoTropa" prefHeight="18.0" prefWidth="20.0" text="X" textFill="#cccccc">
                <font>
                   <Font name="Roboto Medium" size="14.0" />
                </font>
             </Label>
+            <Button layoutX="9.0" layoutY="256.0" mnemonicParsing="false" onAction="#ataqueEspecialDefensa" prefHeight="32.0" prefWidth="419.0" style="-fx-background-color: #d7d5d5;" text="++ DEFENSA" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="panelMovimientos" layoutX="266.0" layoutY="189.0" prefHeight="228.0" prefWidth="428.0" style="-fx-background-color: #2b3d52;" visible="false">
@@ -722,6 +723,349 @@
             <Label fx:id="labelError" layoutX="110.0" layoutY="198.0" text="Lo siento no tienes movimientos" textFill="#cccccc" visible="false">
                <font>
                   <Font name="Roboto Black" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="panelAtaques" layoutX="279.0" layoutY="190.0" prefHeight="228.0" prefWidth="428.0" style="-fx-background-color: #2b3d52;" visible="false">
+         <effect>
+            <DropShadow color="#253446" height="44.72" radius="20.377499999999998" spread="0.16" width="38.79" />
+         </effect>
+         <children>
+            <Label fx:id="campoNombreJ31" layoutX="126.0" layoutY="19.0" text="ATAQUES DISPONIBLES" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Line endX="-100.0" endY="106.0" layoutX="376.0" layoutY="75.0" startX="-100.0" stroke="#6b6767" />
+            <Line endX="-100.0" endY="107.0" layoutX="231.0" layoutY="75.0" startX="-100.0" stroke="#6b6767" />
+            <Label layoutX="21.0" layoutY="74.0" text="ARRIBA:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelAtaqueDerecha" layoutX="157.0" layoutY="74.0" text="DERECHA:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelAtaqueIzquierda" layoutX="299.0" layoutY="74.0" text="IZQUIERDA:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="setArribaAbajoAtaque" layoutX="94.0" layoutY="74.0" prefHeight="18.0" prefWidth="11.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="setIzquierdaAtaque" layoutX="394.0" layoutY="75.0" prefHeight="18.0" prefWidth="11.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="setDerechaAtaque" layoutX="243.0" layoutY="75.0" prefHeight="18.0" prefWidth="11.0" text="0" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="7.0" layoutY="-1.0" onMouseClicked="#cerrarAtaque" prefHeight="18.0" prefWidth="11.0" text="x" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="16.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="btnAtaqueArriba" layoutX="12.0" layoutY="157.0" onAction="#atacarAbajoArriba" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #d7d5d5;" text="ATACAR" textFill="#2b3d52">
+               <font>
+                  <Font name="Roboto Medium" size="12.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnAtaqueDerecha" layoutX="156.0" layoutY="157.0" onAction="#atacarDerecha" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #d7d5d5;" text="ATACAR" textFill="#2b3d52">
+               <font>
+                  <Font name="Roboto Medium" size="12.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnAtaqueIzquierda" layoutX="301.0" layoutY="156.0" onAction="#atacarIzquierda" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #d7d5d5;" text="ATACAR" textFill="#2b3d52">
+               <font>
+                  <Font name="Roboto Medium" size="12.0" />
+               </font>
+            </JFXButton>
+            <Label fx:id="labelErrorAtaque" layoutX="110.0" layoutY="198.0" text="Lo siento no tienes movimientos" textFill="#cccccc" visible="false">
+               <font>
+                  <Font name="Roboto Black" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelAtaqueT1" layoutX="22.0" layoutY="108.0" prefHeight="18.0" prefWidth="78.0" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelAtaqueT2" layoutX="157.0" layoutY="107.0" prefHeight="18.0" prefWidth="80.0" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelAtaqueT3" layoutX="299.0" layoutY="108.0" prefHeight="18.0" prefWidth="94.0" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="panelVStropas" layoutX="253.0" layoutY="153.0" prefHeight="355.0" prefWidth="510.0" style="-fx-background-color: #2b3d52;" visible="false">
+         <children>
+            <Label fx:id="campoNombreJ4" layoutX="164.0" layoutY="14.0" text="ATAQUE ENTRE TROPAS" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Line endX="-100.0" endY="192.0" layoutX="362.0" layoutY="51.0" startX="-100.0" stroke="#6b6767" />
+            <Label fx:id="campoNombreJ41" layoutX="69.0" layoutY="56.0" text="TROPA PROPIA" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="campoNombreJ411" layoutX="330.0" layoutY="56.0" text="TROPA ENEMIGA" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="campoNombreJ412" layoutX="48.0" layoutY="92.0" text="NOMBRE:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="campoNombreJ4121" layoutX="49.0" layoutY="194.0" text="TIPO:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="campoNombreJ4122" layoutX="50.0" layoutY="228.0" text="VIDA:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="campoNombreJ41221" layoutX="48.0" layoutY="161.0" text="ATAQUE:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="campoNombreJ41222" layoutX="47.0" layoutY="128.0" text="DEFENSA:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="nombreAtaqueTropas1" layoutX="142.0" layoutY="94.0" text="NOMBRE:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="tipoAtaqueTropas1" layoutX="143.0" layoutY="129.0" text="TIPO:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="vidaAtaqueTropas1" layoutX="143.0" layoutY="233.0" text="VIDA:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="ataqueAtaqueTropas1" layoutX="144.0" layoutY="166.0" text="ATAQUE:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="defensaAtaqueTropas1" layoutX="144.0" layoutY="201.0" text="DEFENSA:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="campoNombreJ4124" layoutX="314.0" layoutY="93.0" text="NOMBRE:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="campoNombreJ41212" layoutX="315.0" layoutY="195.0" text="TIPO:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="campoNombreJ41224" layoutX="316.0" layoutY="229.0" text="VIDA:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="campoNombreJ412212" layoutX="314.0" layoutY="162.0" text="ATAQUE:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="campoNombreJ412222" layoutX="313.0" layoutY="129.0" text="DEFENSA:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="nombreAtaqueTropas2" layoutX="408.0" layoutY="95.0" text="NOMBRE:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="tipoAtaqueTropas2" layoutX="409.0" layoutY="130.0" text="TIPO:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="vidaAtaqueTropas2" layoutX="409.0" layoutY="234.0" text="VIDA:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="ataqueAtaqueTropas2" layoutX="410.0" layoutY="167.0" text="ATAQUE:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="defensaAtaqueTropas2" layoutX="410.0" layoutY="202.0" text="DEFENSA:" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="infanteria2" layoutX="9.0" layoutY="5.0" onMouseClicked="#cerrarResultVS" prefHeight="18.0" prefWidth="11.0" text="X" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
+               </font>
+            </Label>
+            <JFXButton layoutX="41.0" layoutY="283.0" onAction="#revelarGanador" prefHeight="25.0" prefWidth="428.0" style="-fx-background-color: #d7d5d5;" text="REVERLAR GANADOR" textFill="#2b3d52">
+               <font>
+                  <Font name="Roboto Medium" size="12.0" />
+               </font>
+            </JFXButton>
+            <Label fx:id="resultVS" layoutX="41.0" layoutY="320.0" prefHeight="18.0" prefWidth="446.0" text="LA TROPA GANADORA DE ESTA BATALLA ES:  FINNAN" textFill="#cccccc" visible="false">
+               <font>
+                  <Font name="Roboto Black" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+         </children>
+         <effect>
+            <DropShadow color="#2b3d52" height="53.62" radius="25.5675" spread="0.23" width="50.65" />
+         </effect>
+      </AnchorPane>
+      <Label layoutX="726.0" layoutY="23.0" text="VIDA" textFill="#cccccc">
+         <font>
+            <Font name="Roboto Black" size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label layoutX="723.0" layoutY="571.0" text="VIDA" textFill="#cccccc">
+         <font>
+            <Font name="Roboto Black" size="13.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Label fx:id="vidaTorre1" layoutX="771.0" layoutY="22.0" prefHeight="18.0" prefWidth="11.0" text="3" textFill="WHITE">
+         <font>
+            <Font name="Roboto Medium" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="vidaTorre2" layoutX="767.0" layoutY="569.0" prefHeight="18.0" prefWidth="11.0" text="3" textFill="WHITE">
+         <font>
+            <Font name="Roboto Medium" size="14.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="finJuego" layoutX="397.0" layoutY="212.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2b3d52;" visible="false">
+         <effect>
+            <DropShadow color="#2b3d52" height="44.72" radius="21.119999999999997" spread="0.24" width="41.76" />
+         </effect>
+         <children>
+            <Label fx:id="campoNombreJ5" layoutX="13.0" layoutY="80.0" text="¡ El juego a terminado !" textFill="#cccccc">
+               <font>
+                  <Font name="Roboto Black" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <Label fx:id="infanteria3" layoutX="9.0" layoutY="5.0" onMouseClicked="#cerrarJuego" prefHeight="18.0" prefWidth="11.0" text="X" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Medium" size="14.0" />
                </font>
             </Label>
          </children>

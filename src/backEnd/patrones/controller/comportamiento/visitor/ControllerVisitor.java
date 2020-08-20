@@ -17,17 +17,35 @@ public class ControllerVisitor {
     private HashMap<String, IVisitor>historial=new HashMap<String, IVisitor>();
     private ArrayList<String>limpiador= new ArrayList<String>();
 
+    //Siempre que esté en true, es el turno del jugador 1
+    public boolean jugador;
+
     public void aumentarAtaque(String name){
-        unit=cp.searchUnit(name);
+        unit=searchUnit(name);
         if (unit!=null){
             iVisitor= new MultiplicarAtaque();
             iVisitor.visit(unit);
             historial.put(name,iVisitor);
         }
     }
-
-    public void aumentarDefensa(String name){
-        unit=cp.searchUnit(name);
+    public void aumentarAtaqueUI(String name,int jugador){
+        if(jugador==1){
+            unit= searchUnit2(name);
+        }else {
+            unit= searchUnit1(name);
+        }
+        if (unit!=null){
+            iVisitor= new MultiplicarAtaque();
+            iVisitor.visit(unit);
+            historial.put(name,iVisitor);
+        }
+    }
+    public void aumentarDefensa(String name,int jugador){
+        if(jugador==1){
+            unit= searchUnit2(name);
+        }else {
+            unit= searchUnit1(name);
+        }
         if (unit!=null){
             iVisitor= new MultiplicarDefensa();
             iVisitor.visit(unit);
@@ -36,8 +54,12 @@ public class ControllerVisitor {
         }
     }
 
-    public void aumentarVida(String name){
-        unit=cp.searchUnit(name);
+    public void aumentarVida(String name,int jugador){
+        if(jugador==1){
+            unit= searchUnit2(name);
+        }else {
+            unit= searchUnit1(name);
+        }
         if (unit!=null){
             iVisitor= new SumarVida();
             iVisitor.visit(unit);
@@ -51,7 +73,7 @@ public class ControllerVisitor {
     }
 
     private void limpiar(String name, IVisitor visitor){
-        unit=cp.searchUnit(name);
+        unit=searchUnit(name);
         String tipo= visitor.getClass().getName().toString();
         if (unit!=null){
             if (tipo.equals("backEnd.patrones.comportamiento.visitor.concretos.MultiplicarAtaque")){
@@ -74,4 +96,93 @@ public class ControllerVisitor {
         limpiador.clear();
     }
 
+    public void startPlayer1(){
+        jugador = true;
+    }
+
+    public void endTurn(){
+        if(jugador){
+            jugador = false;
+        } else {
+            jugador = true;
+        }
+    }
+    public Unit searchUnit2(String name){
+        boolean exists = false;
+            if(cp.armyArray.size()>0){
+                for(Map.Entry<String, Unit> entry : cp.armyArray.entrySet()){
+                    if(entry.getKey().equals(name)){
+                        exists = true;
+                    }
+                }
+
+            } else {
+                return cp.armyArray.get(name);
+            }
+
+            if(exists){
+                return cp.armyArray.get(name);
+            } else {
+                return null;
+            }
+    }
+    public Unit searchUnit1(String name){
+        boolean exists = false;
+            if(cp.armyArray2.size()>0){
+                for(Map.Entry<String, Unit> entry : cp.armyArray2.entrySet()){
+                    if(entry.getKey().equals(name)){
+                        exists = true;
+                    }
+                }
+
+            } else {
+                return cp.armyArray2.get(name);
+            }
+
+            if(exists){
+                return cp.armyArray2.get(name);
+            } else {
+                return null;
+            }
+        }
+
+    public Unit searchUnit(String name){
+        boolean exists = false;
+        if(jugador){
+            if(cp.armyArray.size()>0){
+                for(Map.Entry<String, Unit> entry : cp.armyArray.entrySet()){
+                    if(entry.getKey().equals(name)){
+                        exists = true;
+                    }
+                }
+
+            } else {
+                return cp.armyArray.get(name);
+            }
+
+            if(exists){
+                return cp.armyArray.get(name);
+            } else {
+                return null;
+            }
+        } else {
+            if(cp.armyArray2.size()>0){
+                for(Map.Entry<String, Unit> entry : cp.armyArray2.entrySet()){
+                    if(entry.getKey().equals(name)){
+                        exists = true;
+                    }
+                }
+
+            } else {
+                return cp.armyArray2.get(name);
+            }
+
+            if(exists){
+                return cp.armyArray2.get(name);
+            } else {
+                return null;
+            }
+        }
+
+    }
 }

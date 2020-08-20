@@ -277,7 +277,7 @@ public class ControllerAbstractFactory {
                     unit = cp.createInfantryCharacter(character);
                     cp.addToArmyArray(unit, jugador);
                     removeDicesUnit("DadoInfanteria");
-                    data="Tropo de infateria creada,seleccione donde desea colocarla";
+                    data="Tropa de infateria creada,seleccione donde desea colocarla";
                 } else {
                     data="No se puede invocar la infantería, insuficientes dados";
                 }

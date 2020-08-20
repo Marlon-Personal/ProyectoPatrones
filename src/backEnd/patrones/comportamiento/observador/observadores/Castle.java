@@ -6,7 +6,7 @@ import backEnd.patrones.comportamiento.observador.interfaces.Sujeto;
 import java.util.ArrayList;
 
 public class Castle implements Sujeto {
-    private int lifes=3;
+    private int lifes=4;
     //img logo
     private ArrayList<Observador> observadores= new ArrayList<Observador>();
 
@@ -21,14 +21,15 @@ public class Castle implements Sujeto {
     }
 
     @Override
-    public void notifyObservers() {
+    public boolean notifyObservers() {
         for (Observador o: observadores) {
-            o.update(lifes);
+          return o.update(lifes);
         }
+        return true;
     }
 
-    public void recibirAtaque(){
+    public boolean recibirAtaque(){
         lifes--;
-        notifyObservers();
+       return notifyObservers();
     }
 }
